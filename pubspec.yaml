@@ -1,0 +1,21 @@
+name: tcompro_customer
+description: "Tcompro Customer Application"
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: ^3.11.0-55.0.dev
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.5.0
+  flutter_bloc: ^9.1.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
