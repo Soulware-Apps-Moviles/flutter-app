@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:tcompro_customer/core/theme.dart';
+import 'package:tcompro_customer/features/home/data/product_service.dart';
+import 'package:tcompro_customer/features/home/domain/category.dart';
+import 'package:tcompro_customer/features/home/presentation/bloc/products_bloc.dart';
+import 'package:tcompro_customer/features/home/presentation/bloc/products_event.dart';
+import 'package:tcompro_customer/features/main/main_page.dart';
 
 Future<void> main() async {
   await dotenv.load(fileName: ".env");
@@ -12,11 +19,22 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
+    final MaterialTheme theme = MaterialTheme(TextTheme());
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => 
+          ProductsBloc(service: ProductService())
+            ..add(LoadProductsEvent(category: CategoryType.ALL)),
         ),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: theme.light(),
+        darkTheme: theme.dark(),
+        home: Scaffold(
+          body: MainPage()
+        )
       ),
     );
   }
