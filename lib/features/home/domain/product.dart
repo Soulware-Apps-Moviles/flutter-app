@@ -6,14 +6,15 @@ class Product {
   final String description;
   final CategoryType category;
   final double price;
-  final String imageUrl = "https://ho.com.uy/wp-content/uploads/2024/09/placeholder-292-1024x683.png";
+  final String imageUrl;
 
   Product({
     required this.id,
     required this.name,
     required this.description,
     required this.category,
-    required this.price
+    required this.price,
+    required this.imageUrl,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) {
@@ -22,7 +23,8 @@ class Product {
       name: json['name'],
       description: json['description'],
       category: CategoryType.values.byName(json['category']),
-      price: json['price'].toDouble()
+      price: json['price'].toDouble(),
+      imageUrl: json['imageUrl'],
     );
   }
 }
