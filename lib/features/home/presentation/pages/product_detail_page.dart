@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:tcompro_customer/features/home/domain/product.dart';
 import 'package:tcompro_customer/features/home/presentation/bloc/products_bloc.dart';
 import 'package:tcompro_customer/features/home/presentation/bloc/products_event.dart';
 import 'package:tcompro_customer/features/home/presentation/bloc/products_state.dart';
 import 'package:tcompro_customer/features/home/presentation/widgets/add_to_bag_bar.dart';
 import 'package:tcompro_customer/features/home/presentation/widgets/add_to_shopping_list.dart';
+import 'package:tcompro_customer/features/home/presentation/widgets/favorite_button.dart';
 import 'package:tcompro_customer/features/home/presentation/widgets/product_card.dart';
 
 class ProductDetailPage extends StatelessWidget {
@@ -25,15 +27,16 @@ class ProductDetailPage extends StatelessWidget {
           icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 12.0),
-            child: IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.favorite_border, color: Colors.black),
-            ),
+      actions: [
+        Padding(
+          padding: const EdgeInsets.only(right: 12.0),
+          child: FavoriteButton(
+            productId: product.id,
+            customerId: int.tryParse(dotenv.env['CUSTOMER_ID'] ?? '') ?? 0, // TO TEST
           ),
-        ],
+        ),
+      ],
+
       ),
 
       body: SingleChildScrollView(
@@ -132,9 +135,6 @@ class ProductDetailPage extends StatelessWidget {
                             product: relatedProduct,
                             onAddToCart: () {
                               debugPrint("Add ${relatedProduct.name}");
-                            },
-                            onFavorite: () {
-                              debugPrint("Favorite ${relatedProduct.name}");
                             },
                           );
                         },

@@ -79,9 +79,6 @@ class HomePage extends StatelessWidget {
                             onAddToCart: () {
                               debugPrint("Add ${product.name}");
                             },
-                            onFavorite: () {
-                              debugPrint("Favorite ${product.name}");
-                            },
                           ),
                         );
                       },
