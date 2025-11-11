@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:tcompro_customer/features/favorites/domain/entities/favorite.dart';
 
 abstract class FavoritesEvent {}

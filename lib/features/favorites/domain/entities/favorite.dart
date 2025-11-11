@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 class Favorite {
   final int id;
   final int productId;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:tcompro_customer/features/home/domain/product.dart';
-import 'package:tcompro_customer/features/home/presentation/widgets/favorite_button.dart';
+import 'package:tcompro_customer/features/favorites/presentation/widgets/favorite_button.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;

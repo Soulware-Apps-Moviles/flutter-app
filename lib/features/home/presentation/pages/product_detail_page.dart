@@ -7,7 +7,7 @@ import 'package:tcompro_customer/features/home/presentation/bloc/products_event.
 import 'package:tcompro_customer/features/home/presentation/bloc/products_state.dart';
 import 'package:tcompro_customer/features/home/presentation/widgets/add_to_bag_bar.dart';
 import 'package:tcompro_customer/features/home/presentation/widgets/add_to_shopping_list.dart';
-import 'package:tcompro_customer/features/home/presentation/widgets/favorite_button.dart';
+import 'package:tcompro_customer/features/favorites/presentation/widgets/favorite_button.dart';
 import 'package:tcompro_customer/features/home/presentation/widgets/product_card.dart';
 
 class ProductDetailPage extends StatelessWidget {
