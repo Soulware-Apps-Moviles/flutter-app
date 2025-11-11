@@ -1,0 +1,44 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tcompro_customer/features/shopping-lists/data/shopping_list_service.dart';
+import 'package:tcompro_customer/features/shopping-lists/domain/shopping_list.dart';
+import 'package:tcompro_customer/features/shopping-lists/presentation/bloc/shopping_lists_event.dart';
+import 'package:tcompro_customer/features/shopping-lists/presentation/bloc/shopping_lists_state.dart';
+
+class ShoppingListsBloc extends Bloc<ShoppingListsEvent, ShoppingListsState>{
+  final ShoppingListService service;
+  final int customerId;
+
+  ShoppingListsBloc({required this.service, required this.customerId})
+      : super(ShoppingListsState.initial()) {
+    on<LoadShoppingListsEvent>(_onLoadShoppingLists);
+    on<CreateShoppingListEvent>(_onCreateShoppingList);
+  }
+
+  Future<void> _onLoadShoppingLists(
+    LoadShoppingListsEvent event, Emitter<ShoppingListsState> emit) async {
+      try {
+        emit(state.copyWith(loading: true));
+        final lists = await service.fetchShoppingLists(customerId);
+        emit(state.copyWith(shoppingLists: lists, loading: false));
+      } catch (e) {
+        emit(state.copyWith(loading: false));
+      }
+    }
+
+  Future<void> _onCreateShoppingList(
+    CreateShoppingListEvent event, 
+    Emitter<ShoppingListsState> emit
+  ) async {
+    try {
+      emit(state.copyWith(loading: true));
+      final newList = await service.addShoppingList(
+        customerId, 
+        event.name,
+      );
+      final updatedLists = List<ShoppingList>.from(state.shoppingLists)..add(newList);
+      emit(state.copyWith(shoppingLists: updatedLists, loading: false));
+    } catch (e) {
+      emit(state.copyWith(loading: false));
+    }
+  }
+}
