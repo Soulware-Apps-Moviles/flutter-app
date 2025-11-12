@@ -1,9 +1,6 @@
 abstract class ShoppingListsEvent {}
 
-class LoadShoppingListsEvent extends ShoppingListsEvent {
-  final int customerId;
-  LoadShoppingListsEvent({required this.customerId});
-}
+class LoadShoppingListsEvent extends ShoppingListsEvent {}
 
 class CreateShoppingListEvent extends ShoppingListsEvent {
   final int customerId;

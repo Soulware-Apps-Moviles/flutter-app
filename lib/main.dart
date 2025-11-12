@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:tcompro_customer/core/theme.dart';
+import 'package:tcompro_customer/core/ui/theme.dart';
 import 'package:tcompro_customer/features/favorites/data/favorite_service.dart';
 import 'package:tcompro_customer/features/favorites/presentation/bloc/favorites_bloc.dart';
 import 'package:tcompro_customer/features/favorites/presentation/bloc/favorites_event.dart';
@@ -36,13 +36,13 @@ class MainApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => 
-          FavoritesBloc(service: FavoriteService(), customerId: 10001)
+          FavoritesBloc(service: FavoriteService(), customerId: int.tryParse(dotenv.env['CUSTOMER_ID'] ?? '0') ?? 0) //TO TEST
             ..add(LoadFavoritesEvent()),
         ),
         BlocProvider(
           create: (context) => 
-          ShoppingListsBloc(service: ShoppingListService(), customerId: 10001)
-            ..add(LoadShoppingListsEvent(customerId: 10001)),
+          ShoppingListsBloc(service: ShoppingListService(), customerId: int.tryParse(dotenv.env['CUSTOMER_ID'] ?? '0') ?? 0) //TO TEST
+            ..add(LoadShoppingListsEvent()),
         ),
       ],
       child: MaterialApp(

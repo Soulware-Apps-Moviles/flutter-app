@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:tcompro_customer/constants/api_constants.dart';
+import 'package:tcompro_customer/core/constants/api_constants.dart';
 import 'package:tcompro_customer/features/favorites/domain/entities/favorite.dart';
 
 import 'package:http/http.dart' as http;

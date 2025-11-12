@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:tcompro_customer/features/home/presentation/widgets/search_bar.dart';
 import 'package:tcompro_customer/features/shopping-lists/presentation/bloc/shopping_lists_bloc.dart';
 import 'package:tcompro_customer/features/shopping-lists/presentation/bloc/shopping_lists_event.dart';
@@ -16,13 +17,12 @@ class ShoppingListsPage extends StatefulWidget {
 }
 
 class _ShoppingListsPageState extends State<ShoppingListsPage> {
-  int customerId = 10001;
   String _searchQuery = '';
 
   @override
   void initState() {
     super.initState();
-    context.read<ShoppingListsBloc>().add(LoadShoppingListsEvent(customerId: customerId));
+    context.read<ShoppingListsBloc>().add(LoadShoppingListsEvent());
   }
 
   @override
@@ -53,7 +53,7 @@ class _ShoppingListsPageState extends State<ShoppingListsPage> {
                       )),
                   AddShoppingListWidget(
                     onAdd: (name) => context.read<ShoppingListsBloc>().add(
-                          CreateShoppingListEvent(customerId: customerId, name: name),
+                          CreateShoppingListEvent(customerId: int.parse(dotenv.env['CUSTOMER_ID'] ?? '0'), name: name),
                         ),
                   ),
                 ],

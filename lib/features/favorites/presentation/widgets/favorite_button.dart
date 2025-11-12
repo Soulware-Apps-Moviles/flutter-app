@@ -26,7 +26,7 @@ class FavoriteButton extends StatelessWidget {
         return IconButton(
           onPressed: () {
             final favorite = Favorite(
-              id: 0, // este campo lo puedes ignorar si no lo usas
+              id: 0,
               productId: productId,
               customerId: customerId,
             );
