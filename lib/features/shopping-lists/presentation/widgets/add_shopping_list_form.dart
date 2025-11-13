@@ -14,31 +14,28 @@ class _AddShoppingListWidgetState extends State<AddShoppingListWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+      return Card(
+      elevation: 0,
       color: Colors.white,
-      margin: const EdgeInsets.all(12),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          children: [
-            const Text("Add shopping list", style: TextStyle(fontWeight: FontWeight.bold)),
-            TextField(
-              controller: _controller,
-              decoration: const InputDecoration(labelText: 'Name', hintText: 'Example name'),
-            ),
-            const SizedBox(height: 8),
-            ElevatedButton(
-              onPressed: () {
-                final name = _controller.text.trim();
-                if (name.isNotEmpty) {
-                  widget.onAdd(name);
-                  _controller.clear();
-                }
-              },
-              child: const Text("Add"),
-            ),
-          ],
-        ),
+      child: Column(
+        children: [
+          const Text("Add shopping list", style: TextStyle(fontWeight: FontWeight.bold)),
+          TextField(
+            controller: _controller,
+            decoration: const InputDecoration(labelText: 'Name', hintText: 'Example name'),
+          ),
+          const SizedBox(height: 8),
+          ElevatedButton(
+            onPressed: () {
+              final name = _controller.text.trim();
+              if (name.isNotEmpty) {
+                widget.onAdd(name);
+                _controller.clear();
+              }
+            },
+            child: const Text("Add"),
+          ),
+        ],
       ),
     );
   }
