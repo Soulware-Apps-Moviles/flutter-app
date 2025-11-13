@@ -17,6 +17,7 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 3,
+      color: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,7 +32,13 @@ class ProductCard extends StatelessWidget {
                   product.imageUrl,
                   height: 160,
                   width: double.infinity,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.contain,
+                  errorBuilder: (_, __, ___) => Image.network(
+                    "https://www.costaoil.com.co/wp-content/uploads/2025/01/sinimagen.jpg",
+                    height: 160,
+                    width: double.infinity,
+                    fit: BoxFit.contain,
+                  ),
                 ),
               ),
               // Favorite Button
@@ -50,14 +57,18 @@ class ProductCard extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             child: Text(
               product.name,
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              maxLines: 1,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             ),
           ),
 
           // Price
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: Text('S/ ${product.price.toStringAsFixed(2)}'),
+            child: Text(
+              'S/ ${product.price.toStringAsFixed(2)}',
+              style: const TextStyle(fontSize: 16),
+              ),
           ),
 
           const Spacer(),

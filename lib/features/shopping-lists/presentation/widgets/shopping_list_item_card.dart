@@ -16,6 +16,7 @@ class ShoppingListItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: Colors.white,
       elevation: 3,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Column(
@@ -31,9 +32,13 @@ class ShoppingListItemCard extends StatelessWidget {
                   item.imageUrl,
                   height: 120,
                   width: double.infinity,
-                  fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) =>
-                      const Icon(Icons.image_not_supported, size: 50),
+                  fit: BoxFit.contain,
+                  errorBuilder: (_, __, ___) => Image.network(
+                    "https://www.costaoil.com.co/wp-content/uploads/2025/01/sinimagen.jpg",
+                    height: 160,
+                    width: double.infinity,
+                    fit: BoxFit.contain,
+                  ),
                 ),
               ),
               IconButton(
@@ -47,7 +52,7 @@ class ShoppingListItemCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 8, top: 4),
             child: Text('${item.quantity}x',
-                style: const TextStyle(fontWeight: FontWeight.bold)),
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
           ),
 
           // Name
@@ -57,14 +62,16 @@ class ShoppingListItemCard extends StatelessWidget {
               item.name,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontWeight: FontWeight.w600),
+              style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
             ),
           ),
 
           // Price
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-            child: Text('S/ ${item.price.toStringAsFixed(2)}'),
+            child: Text(
+              'S/ ${item.price.toStringAsFixed(2)}',
+              style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 14)),
           ),
 
           const Spacer(),

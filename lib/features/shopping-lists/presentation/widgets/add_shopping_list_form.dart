@@ -15,6 +15,7 @@ class _AddShoppingListWidgetState extends State<AddShoppingListWidget> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: Colors.white,
       margin: const EdgeInsets.all(12),
       child: Padding(
         padding: const EdgeInsets.all(12),
