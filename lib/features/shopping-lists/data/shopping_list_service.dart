@@ -8,10 +8,14 @@ import 'package:tcompro_customer/features/shopping-lists/domain/shopping_list.da
 
 class ShoppingListService {
 
-  Future<List<ShoppingList>> fetchShoppingLists(int customerId) async {
+  Future<List<ShoppingList>> fetchShoppingLists({required int customerId, String? name}) async {
     try {
       final uri = Uri.parse(ApiConstants.baseUrl).replace(
-        path: '${ApiConstants.shoppingListsEndpoint}/by-customer/$customerId',
+        path: ApiConstants.shoppingListsEndpoint,
+        queryParameters: {
+          'customerId': customerId.toString(),
+          if (name != null) 'name': name,
+        },
       );
 
       debugPrint('URL: $uri');

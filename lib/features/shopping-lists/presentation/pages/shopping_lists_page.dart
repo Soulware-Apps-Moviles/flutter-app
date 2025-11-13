@@ -8,60 +8,94 @@ import 'package:tcompro_customer/features/shopping-lists/presentation/bloc/shopp
 import 'package:tcompro_customer/features/shopping-lists/presentation/widgets/add_shopping_list_form.dart';
 import 'package:tcompro_customer/features/shopping-lists/presentation/widgets/shopping_list_card.dart';
 
-
-class ShoppingListsPage extends StatefulWidget {
+class ShoppingListsPage extends StatelessWidget {
   const ShoppingListsPage({super.key});
 
   @override
-  State<ShoppingListsPage> createState() => _ShoppingListsPageState();
-}
-
-class _ShoppingListsPageState extends State<ShoppingListsPage> {
-  String _searchQuery = '';
-
-  @override
-  void initState() {
-    super.initState();
-    context.read<ShoppingListsBloc>().add(LoadShoppingListsEvent());
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final bloc = context.read<ShoppingListsBloc>();
+
     return SafeArea(
-      child: Scaffold(
-        body: BlocBuilder<ShoppingListsBloc, ShoppingListsState>(
-          builder: (context, state) {
-            if (state.loading) {
-              return const Center(child: CircularProgressIndicator());
-            }
-      
-            final lists = state.shoppingLists
-                .where((l) => l.name.toLowerCase().contains(_searchQuery.toLowerCase()))
-                .toList();
-      
-            return SingleChildScrollView(
-              child: Column(
-                children: [
-                  SearchBarWidget(onSearch: (query) => setState(() => _searchQuery = query)),
-                  ...lists.map((list) => ShoppingListCard(
+      child: Column(
+        children: [
+          //Search bar
+          SearchBarWidget(
+            onSearch: (query) {
+              bloc.add(SearchShoppingListsEvent(name: query));
+            },
+          ),
+
+          // Shopping lists + add form
+          Expanded(
+            child: BlocBuilder<ShoppingListsBloc, ShoppingListsState>(
+              builder: (context, state) {
+                if (state.loading) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                if (state.shoppingLists.isEmpty) {
+                  return ListView(
+                    padding: const EdgeInsets.all(16),
+                    children: [
+                      const Center(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 24),
+                          child: Text('No shopping lists found.'),
+                        ),
+                      ),
+                      _buildAddShoppingListWidget(context),
+                    ],
+                  );
+                }
+
+                return RefreshIndicator(
+                  onRefresh: () async {
+                    bloc.add(LoadShoppingListsEvent());
+                  },
+                  child: ListView.builder(
+                    padding: const EdgeInsets.all(12),
+                    itemCount: state.shoppingLists.length + 1,
+                    itemBuilder: (context, index) {
+                      if (index == state.shoppingLists.length) {
+                        return Padding(
+                          padding: const EdgeInsets.only(top: 12, bottom: 24),
+                          child: _buildAddShoppingListWidget(context),
+                        );
+                      }
+
+                      final list = state.shoppingLists[index];
+                      return ShoppingListCard(
                         list: list,
                         onAddAllToBag: () {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Added all items from ${list.name}')),
+                            SnackBar(
+                              content: Text('Added all items from ${list.name}'),
+                            ),
                           );
                         },
-                      )),
-                  AddShoppingListWidget(
-                    onAdd: (name) => context.read<ShoppingListsBloc>().add(
-                          CreateShoppingListEvent(customerId: int.parse(dotenv.env['CUSTOMER_ID'] ?? '0'), name: name),
-                        ),
+                      );
+                    },
                   ),
-                ],
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+  Widget _buildAddShoppingListWidget(BuildContext context) {
+    final customerId = int.parse(dotenv.env['CUSTOMER_ID'] ?? '0');
+
+    return AddShoppingListWidget(
+      onAdd: (name) {
+        context.read<ShoppingListsBloc>().add(
+              CreateShoppingListEvent(
+                customerId: customerId,
+                name: name,
               ),
             );
-          },
-        ),
-      ),
+      },
     );
   }
 }

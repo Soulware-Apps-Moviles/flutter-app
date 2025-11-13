@@ -12,18 +12,36 @@ class ShoppingListsBloc extends Bloc<ShoppingListsEvent, ShoppingListsState>{
       : super(ShoppingListsState.initial()) {
     on<LoadShoppingListsEvent>(_onLoadShoppingLists);
     on<CreateShoppingListEvent>(_onCreateShoppingList);
+    on<SearchShoppingListsEvent>(_searchShoppingLists);
   }
 
   Future<void> _onLoadShoppingLists(
     LoadShoppingListsEvent event, Emitter<ShoppingListsState> emit) async {
       try {
         emit(state.copyWith(loading: true));
-        final lists = await service.fetchShoppingLists(customerId);
+        final lists = await service.fetchShoppingLists(customerId: customerId);
         emit(state.copyWith(shoppingLists: lists, loading: false));
       } catch (e) {
         emit(state.copyWith(loading: false));
       }
     }
+
+  Future<void> _searchShoppingLists(
+    SearchShoppingListsEvent event, 
+    Emitter<ShoppingListsState> emit
+  ) async {
+    try {
+      emit(state.copyWith(loading: true));
+      final lists = await service.fetchShoppingLists(
+        customerId: customerId,
+        name: event.name.isEmpty ? null : event.name,
+      );
+      emit(state.copyWith(shoppingLists: lists, loading: false));
+    } catch (e) {
+      emit(state.copyWith(loading: false));
+    }
+  }
+  
 
   Future<void> _onCreateShoppingList(
     CreateShoppingListEvent event, 
