@@ -5,6 +5,7 @@ import 'package:tcompro_customer/features/home/presentation/widgets/search_bar.d
 import 'package:tcompro_customer/features/shopping-lists/presentation/bloc/shopping_lists_bloc.dart';
 import 'package:tcompro_customer/features/shopping-lists/presentation/bloc/shopping_lists_event.dart';
 import 'package:tcompro_customer/features/shopping-lists/presentation/bloc/shopping_lists_state.dart';
+import 'package:tcompro_customer/features/shopping-lists/presentation/pages/shopping_list_detail_page.dart';
 import 'package:tcompro_customer/features/shopping-lists/presentation/widgets/add_shopping_list_form.dart';
 import 'package:tcompro_customer/features/shopping-lists/presentation/widgets/shopping_list_card.dart';
 
@@ -62,18 +63,27 @@ class ShoppingListsPage extends StatelessWidget {
                           child: _buildAddShoppingListWidget(context),
                         );
                       }
-
                       final list = state.shoppingLists[index];
-                      return ShoppingListCard(
-                        list: list,
-                        onAddAllToBag: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Added all items from ${list.name}'),
-                            ),
-                          );
-                        },
-                      );
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => ShoppingListDetailPage(list: list),
+                              ),
+                            );
+                          },
+                          child: ShoppingListCard(
+                            list: list,
+                            onAddAllToBag: () {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Added all items from ${list.name}'),
+                                ),
+                              );
+                            },
+                          ),
+                        );
                     },
                   ),
                 );
