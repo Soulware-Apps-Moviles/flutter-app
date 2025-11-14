@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:tcompro_customer/core/constants/api_constants.dart';
 import 'package:tcompro_customer/core/ui/theme.dart';
 import 'package:tcompro_customer/features/favorites/data/favorite_service.dart';
 import 'package:tcompro_customer/features/favorites/presentation/bloc/favorites_bloc.dart';
@@ -16,6 +18,12 @@ import 'package:tcompro_customer/features/shopping-lists/presentation/bloc/shopp
 
 Future<void> main() async {
   await dotenv.load(fileName: ".env");
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await Supabase.initialize(
+    url: ApiConstants.supabaseUrl,
+    anonKey: ApiConstants.supabasePublisheableKey,
+  );
 
   runApp(const MainApp());
 }
