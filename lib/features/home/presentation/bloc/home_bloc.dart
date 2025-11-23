@@ -4,20 +4,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tcompro_customer/features/home/data/product_service.dart';
 import 'package:tcompro_customer/features/home/domain/category.dart';
 import 'package:tcompro_customer/features/home/domain/product.dart';
-import 'package:tcompro_customer/features/home/presentation/bloc/products_event.dart';
-import 'package:tcompro_customer/features/home/presentation/bloc/products_state.dart';
+import 'package:tcompro_customer/features/home/presentation/bloc/home_event.dart';
+import 'package:tcompro_customer/features/home/presentation/bloc/home_state.dart';
 
-class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
+class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final ProductService service;
 
-  ProductsBloc({required this.service}) : super(ProductsState()){
+  HomeBloc({required this.service}) : super(HomeState()){
     on<LoadProductsEvent>(_loadProducts);
     on<SearchProductsEvent>(_searchProducts);
   }
 
   FutureOr<void> _loadProducts(
     LoadProductsEvent event,
-    Emitter<ProductsState> emit,
+    Emitter<HomeState> emit,
   ) async {
     if (state.selectedCategory == event.category && state.products.isNotEmpty){
       return;
@@ -38,7 +38,7 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
 
   FutureOr<void> _searchProducts(
   SearchProductsEvent event,
-  Emitter<ProductsState> emit,
+  Emitter<HomeState> emit,
   ) async {
     emit(state.copyWith(status: Status.loading));
     try {

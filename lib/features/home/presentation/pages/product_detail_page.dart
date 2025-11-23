@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:tcompro_customer/features/home/domain/product.dart';
-import 'package:tcompro_customer/features/home/presentation/bloc/products_bloc.dart';
-import 'package:tcompro_customer/features/home/presentation/bloc/products_event.dart';
-import 'package:tcompro_customer/features/home/presentation/bloc/products_state.dart';
+import 'package:tcompro_customer/features/home/presentation/bloc/home_bloc.dart';
+import 'package:tcompro_customer/features/home/presentation/bloc/home_event.dart';
+import 'package:tcompro_customer/features/home/presentation/bloc/home_state.dart';
 import 'package:tcompro_customer/features/home/presentation/widgets/add_to_bag_bar.dart';
 import 'package:tcompro_customer/features/home/presentation/widgets/add_to_shopping_list.dart';
 import 'package:tcompro_customer/features/favorites/presentation/widgets/favorite_button.dart';
@@ -51,7 +51,7 @@ class ProductDetailPage extends StatelessWidget {
                   product.imageUrl,
                   height: MediaQuery.of(context).size.height * 0.35,
                   fit: BoxFit.contain,
-                  errorBuilder: (_, __, ___) =>
+                  errorBuilder: (_, _, _) =>
                       const Icon(Icons.image_not_supported, size: 100),
                 ),
               ),
@@ -102,8 +102,8 @@ class ProductDetailPage extends StatelessWidget {
               ),
               const SizedBox(height: 12),
 
-              BlocBuilder<ProductsBloc, ProductsState>(
-                bloc: BlocProvider.of<ProductsBloc>(context)
+              BlocBuilder<HomeBloc, HomeState>(
+                bloc: BlocProvider.of<HomeBloc>(context)
                   ..add(LoadProductsEvent(category: product.category)),
                 builder: (context, state) {
                   switch (state.status) {

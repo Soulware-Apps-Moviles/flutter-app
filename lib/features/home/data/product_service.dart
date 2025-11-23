@@ -1,19 +1,17 @@
-import 'dart:convert';
-import 'dart:ffi';
-import 'dart:io';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:tcompro_customer/core/constants/api_constants.dart';
 import 'package:tcompro_customer/features/home/domain/product.dart';
 
 class ProductService {
+  final Dio _dio;
 
-  // ALL PRODUCTS BY CATEGORY
-  Future<List<Product>> fetchProducts({String? category, String? name, Long? id}) async {
+  ProductService({required Dio dio}) : _dio = dio;
+
+  Future<List<Product>> fetchProducts({String? category, String? name, int? id}) async {
     try {
-      final uri = Uri.parse(ApiConstants.baseUrl).replace(
-        path: ApiConstants.productsEndpoint,
+      final response = await _dio.get(
+        ApiConstants.productsEndpoint,
         queryParameters: {
           if (category != null) 'category': category,
           if (name != null) 'name': name,
@@ -21,30 +19,13 @@ class ProductService {
         },
       );
 
-      debugPrint('URL: $uri');
+      final List data = response.data;
 
-      //TO TESTING WITH DEV TOKEN
-      final String token = dotenv.env['DEV_TOKEN'] ?? '';
-
-      final response = await http.get(
-        uri,
-        headers: {
-          'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json',
-        },
-      );
-
-      debugPrint('Status: ${response.statusCode}');
-
-      if (response.statusCode == HttpStatus.ok) {
-        final List data = jsonDecode(response.body);
-        return data.map((e) => Product.fromJson(e)).toList();
-      }
-
-      throw HttpException('Status code: ${response.statusCode}');
+      return data.map((e) => Product.fromJson(e)).toList();
+      
     } catch (e, st) {
-      debugPrint('Error fetchProductsByCategory: $e\n$st');
-      throw Exception('Failed to load products by category: $e');
+      debugPrint('Error fetchProducts: $e\n$st');
+      throw Exception('Failed to load products: $e');
     }
   }
 }

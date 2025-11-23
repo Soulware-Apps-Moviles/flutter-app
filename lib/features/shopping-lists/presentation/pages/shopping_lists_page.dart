@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:tcompro_customer/features/home/presentation/widgets/search_bar.dart';
 import 'package:tcompro_customer/features/shopping-lists/presentation/bloc/shopping_lists_bloc.dart';
 import 'package:tcompro_customer/features/shopping-lists/presentation/bloc/shopping_lists_event.dart';
@@ -52,7 +51,10 @@ class ShoppingListsPage extends StatelessWidget {
 
                   return RefreshIndicator(
                     onRefresh: () async {
-                      bloc.add(LoadShoppingListsEvent());
+                      final currentId = state.customerId;
+                      if (currentId != null) {
+                        bloc.add(LoadShoppingListsEvent(customerId: currentId));
+                      }
                     },
                     child: ListView.builder(
                       padding: const EdgeInsets.all(12),
@@ -95,7 +97,6 @@ class ShoppingListsPage extends StatelessWidget {
   }
 
   void _openAddShoppingListModal(BuildContext context) {
-    final customerId = int.parse(dotenv.env['CUSTOMER_ID'] ?? '0');
     showDialog(
       context: context,
       barrierDismissible: true, // allows closing by tapping outside
@@ -109,13 +110,8 @@ class ShoppingListsPage extends StatelessWidget {
             width: 300,
             height: 150,
             child: AddShoppingListWidget(
-              onAdd: (name) {
-                context.read<ShoppingListsBloc>().add(
-                      CreateShoppingListEvent(
-                        name: name,
-                        customerId: customerId,
-                      ),
-                    );
+               onAdd: (name) {
+                context.read<ShoppingListsBloc>().add(CreateShoppingListEvent(name: name));
                 Navigator.of(context).pop();
               },
             ),

@@ -3,26 +3,26 @@ import 'package:tcompro_customer/features/home/domain/product.dart';
 
 enum Status { initial, loading, loaded, error }
 
-class ProductsState {
+class HomeState {
   final Status status;
   final CategoryType selectedCategory;
   final List<Product> products;
   final String? errorMessage;
 
-  const ProductsState({
+  const HomeState({
     this.status = Status.initial,
     this.selectedCategory = CategoryType.ALL,
     this.products = const [],
     this.errorMessage,
   });
 
-  ProductsState copyWith({
+  HomeState copyWith({
     Status? status,
     CategoryType? selectedCategory,
     List<Product>? products,
     String? errorMessage,
   }) {
-    return ProductsState(
+    return HomeState(
       status: status ?? this.status,
       selectedCategory: selectedCategory ?? this.selectedCategory,
       products: products ?? this.products,

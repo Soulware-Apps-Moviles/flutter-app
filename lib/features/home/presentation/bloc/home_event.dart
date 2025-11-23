@@ -1,13 +1,13 @@
 import 'package:tcompro_customer/features/home/domain/category.dart';
 
-abstract class ProductsEvent {}
+abstract class HomeEvent {}
 
-class LoadProductsEvent extends ProductsEvent {
+class LoadProductsEvent extends HomeEvent {
   final CategoryType category;
   LoadProductsEvent({required this.category});
 }
 
-class SearchProductsEvent extends ProductsEvent {
+class SearchProductsEvent extends HomeEvent {
   final String name;
   final String category;
   SearchProductsEvent({

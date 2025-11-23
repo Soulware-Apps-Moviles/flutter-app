@@ -1,28 +1,41 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tcompro_customer/core/constants/api_constants.dart';
+import 'package:tcompro_customer/core/constants/supabase_constants.dart';
+import 'package:tcompro_customer/core/data/cubits/profile_cubit.dart';
+import 'package:tcompro_customer/core/data/request_interceptor.dart';
+import 'package:tcompro_customer/core/data/storage/supabase_secure_storage.dart';
+import 'package:tcompro_customer/core/data/cubits/token_cubit.dart';
 import 'package:tcompro_customer/core/ui/theme.dart';
+import 'package:tcompro_customer/features/auth/data/auth_repository_impl.dart';
+import 'package:tcompro_customer/features/auth/domain/auth_repository.dart';
+import 'package:tcompro_customer/features/auth/presentation/blocs/login_bloc.dart';
+import 'package:tcompro_customer/features/auth/presentation/pages/login_page.dart';
 import 'package:tcompro_customer/features/favorites/data/favorite_service.dart';
 import 'package:tcompro_customer/features/favorites/presentation/bloc/favorites_bloc.dart';
-import 'package:tcompro_customer/features/favorites/presentation/bloc/favorites_event.dart';
 import 'package:tcompro_customer/features/home/data/product_service.dart';
 import 'package:tcompro_customer/features/home/domain/category.dart';
-import 'package:tcompro_customer/features/home/presentation/bloc/products_bloc.dart';
-import 'package:tcompro_customer/features/home/presentation/bloc/products_event.dart';
+import 'package:tcompro_customer/features/home/presentation/bloc/home_bloc.dart';
+import 'package:tcompro_customer/features/home/presentation/bloc/home_event.dart';
 import 'package:tcompro_customer/features/main/main_page.dart';
 import 'package:tcompro_customer/features/shopping-lists/data/shopping_list_service.dart';
 import 'package:tcompro_customer/features/shopping-lists/presentation/bloc/shopping_lists_bloc.dart';
-import 'package:tcompro_customer/features/shopping-lists/presentation/bloc/shopping_lists_event.dart';
+import 'package:tcompro_customer/features/auth/data/auth_service.dart';
+import 'package:tcompro_customer/shared/data/profile_service.dart';
 
 Future<void> main() async {
   await dotenv.load(fileName: ".env");
 
   WidgetsFlutterBinding.ensureInitialized();
   await Supabase.initialize(
-    url: ApiConstants.supabaseUrl,
-    anonKey: ApiConstants.supabasePublisheableKey,
+    url: SupabaseConstants.supabaseUrl,
+    anonKey: SupabaseConstants.supabasePublisheableKey,
+    authOptions: FlutterAuthClientOptions(
+      localStorage: SupabaseSecureStorage(),
+    ),
   );
 
   runApp(const MainApp());
@@ -34,32 +47,71 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final MaterialTheme theme = MaterialTheme(TextTheme());
-    return MultiBlocProvider(
+    
+    final tokenCubit = TokenCubit();
+    final supabaseClient = Supabase.instance.client;
+    
+    final dio = Dio(BaseOptions(baseUrl: ApiConstants.baseUrl));
+    dio.interceptors.add(RequestInterceptor(tokenCubit));
+    
+    final authService = AuthService(supabaseClient);
+    final profileService = ProfileService(dio: dio);
+    final productService = ProductService(dio: dio);
+    final favoriteService = FavoriteService(dio: dio);
+    final shoppingListService = ShoppingListService(dio: dio);
+    
+    final authRepository = AuthRepositoryImpl(
+      authService: authService,
+      tokenCubit: tokenCubit,
+    );
+
+    return MultiRepositoryProvider(
       providers: [
-        BlocProvider(
-          create: (context) => 
-          ProductsBloc(service: ProductService())
-            ..add(LoadProductsEvent(category: CategoryType.ALL)),
-            
-        ),
-        BlocProvider(
-          create: (context) => 
-          FavoritesBloc(service: FavoriteService(), customerId: int.tryParse(dotenv.env['CUSTOMER_ID'] ?? '0') ?? 0) //TO TEST
-            ..add(LoadFavoritesEvent()),
-        ),
-        BlocProvider(
-          create: (context) => 
-          ShoppingListsBloc(service: ShoppingListService(), customerId: int.tryParse(dotenv.env['CUSTOMER_ID'] ?? '0') ?? 0) //TO TEST
-            ..add(LoadShoppingListsEvent()),
-        ),
+        RepositoryProvider<AuthRepository>(create: (_) => authRepository),
+        RepositoryProvider<ProfileService>(create: (_) => profileService),
+        RepositoryProvider<Dio>(create: (_) => dio),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: theme.light(),
-        darkTheme: theme.dark(),
-        home: Scaffold(
-          body: MainPage()
-        )
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<TokenCubit>(
+            create: (_) => tokenCubit,
+          ),
+          BlocProvider<UserCubit>(
+            create: (context) => UserCubit(
+              context.read<AuthRepository>(), 
+              profileService,
+            ),
+          ),
+          BlocProvider(
+            create: (context) => LoginBloc(authRepository: authRepository),
+          ),
+          BlocProvider(
+            create: (context) => 
+            HomeBloc(service: productService)..add(LoadProductsEvent(category: CategoryType.ALL))
+          ),
+          BlocProvider(
+            create: (context) => 
+            FavoritesBloc(service: favoriteService)
+          ),
+          BlocProvider(
+            create: (context) => 
+            ShoppingListsBloc(service: shoppingListService)
+          ),
+        ],
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: theme.light(),
+          darkTheme: theme.dark(),
+          home: BlocBuilder<TokenCubit, String?>(
+            builder: (context, token) {
+              if (token == null) {
+                return const LoginPage();
+              } else {
+                return const MainPage();
+              }
+            },
+          ),
+        ),
       ),
     );
   }

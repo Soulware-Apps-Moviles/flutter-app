@@ -33,7 +33,7 @@ class ShoppingListItemCard extends StatelessWidget {
                   height: 120,
                   width: double.infinity,
                   fit: BoxFit.contain,
-                  errorBuilder: (_, __, ___) => Image.network(
+                  errorBuilder: (_, _, _) => Image.network(
                     "https://www.costaoil.com.co/wp-content/uploads/2025/01/sinimagen.jpg",
                     height: 160,
                     width: double.infinity,

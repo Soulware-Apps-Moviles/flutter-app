@@ -4,11 +4,10 @@ import 'package:tcompro_customer/features/shopping-lists/domain/shopping_list.da
 import 'package:tcompro_customer/features/shopping-lists/presentation/bloc/shopping_lists_event.dart';
 import 'package:tcompro_customer/features/shopping-lists/presentation/bloc/shopping_lists_state.dart';
 
-class ShoppingListsBloc extends Bloc<ShoppingListsEvent, ShoppingListsState>{
+class ShoppingListsBloc extends Bloc<ShoppingListsEvent, ShoppingListsState> {
   final ShoppingListService service;
-  final int customerId;
 
-  ShoppingListsBloc({required this.service, required this.customerId})
+  ShoppingListsBloc({required this.service})
       : super(ShoppingListsState.initial()) {
     on<LoadShoppingListsEvent>(_onLoadShoppingLists);
     on<CreateShoppingListEvent>(_onCreateShoppingList);
@@ -16,20 +15,26 @@ class ShoppingListsBloc extends Bloc<ShoppingListsEvent, ShoppingListsState>{
   }
 
   Future<void> _onLoadShoppingLists(
-    LoadShoppingListsEvent event, Emitter<ShoppingListsState> emit) async {
-      try {
-        emit(state.copyWith(loading: true));
-        final lists = await service.fetchShoppingLists(customerId: customerId);
-        emit(state.copyWith(shoppingLists: lists, loading: false));
-      } catch (e) {
-        emit(state.copyWith(loading: false));
-      }
+      LoadShoppingListsEvent event, Emitter<ShoppingListsState> emit) async {
+    try {
+      // 1. Guardamos el ID en el estado y ponemos loading
+      emit(state.copyWith(loading: true, customerId: event.customerId));
+      
+      // 2. Usamos el ID que vino en el evento
+      final lists = await service.fetchShoppingLists(customerId: event.customerId);
+      
+      emit(state.copyWith(shoppingLists: lists, loading: false));
+    } catch (e) {
+      emit(state.copyWith(loading: false, error: e.toString()));
     }
+  }
 
   Future<void> _searchShoppingLists(
-    SearchShoppingListsEvent event, 
-    Emitter<ShoppingListsState> emit
-  ) async {
+      SearchShoppingListsEvent event, Emitter<ShoppingListsState> emit) async {
+    // 3. Recuperamos el ID del estado
+    final customerId = state.customerId;
+    if (customerId == null) return; // Protección si no se ha cargado usuario
+
     try {
       emit(state.copyWith(loading: true));
       final lists = await service.fetchShoppingLists(
@@ -38,25 +43,26 @@ class ShoppingListsBloc extends Bloc<ShoppingListsEvent, ShoppingListsState>{
       );
       emit(state.copyWith(shoppingLists: lists, loading: false));
     } catch (e) {
-      emit(state.copyWith(loading: false));
+      emit(state.copyWith(loading: false, error: e.toString()));
     }
   }
-  
 
   Future<void> _onCreateShoppingList(
-    CreateShoppingListEvent event, 
-    Emitter<ShoppingListsState> emit
-  ) async {
+      CreateShoppingListEvent event, Emitter<ShoppingListsState> emit) async {
+    // 4. Recuperamos el ID del estado
+    final customerId = state.customerId;
+    if (customerId == null) return;
+
     try {
       emit(state.copyWith(loading: true));
       final newList = await service.addShoppingList(
-        customerId, 
+        customerId,
         event.name,
       );
       final updatedLists = List<ShoppingList>.from(state.shoppingLists)..add(newList);
       emit(state.copyWith(shoppingLists: updatedLists, loading: false));
     } catch (e) {
-      emit(state.copyWith(loading: false));
+      emit(state.copyWith(loading: false, error: e.toString()));
     }
   }
 }
