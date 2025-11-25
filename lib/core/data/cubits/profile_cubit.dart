@@ -7,12 +7,16 @@ import 'package:tcompro_customer/shared/data/profile_service.dart';
 import 'package:tcompro_customer/shared/domain/profile.dart';
 
 // Its a bloc-type class that handles the in-memory state of the user's Profile
-class UserCubit extends Cubit<Profile?> {
+class ProfileCubit extends Cubit<Profile?> {
   final AuthRepository _authRepository;
   final ProfileService _profileService;
 
-  UserCubit(this._authRepository, this._profileService) : super(null) {
+  ProfileCubit(this._authRepository, this._profileService) : super(null) {
     _monitorAuthState();
+  }
+
+  void setProfile(Profile profile) {
+    emit(profile);
   }
 
   void _monitorAuthState() {

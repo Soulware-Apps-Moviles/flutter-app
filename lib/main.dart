@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tcompro_customer/core/constants/api_constants.dart';
+import 'package:tcompro_customer/core/enums/app_routes.dart';
 import 'package:tcompro_customer/core/constants/supabase_constants.dart';
 import 'package:tcompro_customer/core/data/cubits/profile_cubit.dart';
 import 'package:tcompro_customer/core/data/request_interceptor.dart';
@@ -13,7 +14,9 @@ import 'package:tcompro_customer/core/ui/theme.dart';
 import 'package:tcompro_customer/features/auth/data/auth_repository_impl.dart';
 import 'package:tcompro_customer/features/auth/domain/auth_repository.dart';
 import 'package:tcompro_customer/features/auth/presentation/blocs/login_bloc.dart';
+import 'package:tcompro_customer/features/auth/presentation/blocs/register_bloc.dart';
 import 'package:tcompro_customer/features/auth/presentation/pages/login_page.dart';
+import 'package:tcompro_customer/features/auth/presentation/pages/register_page.dart';
 import 'package:tcompro_customer/features/favorites/data/favorite_service.dart';
 import 'package:tcompro_customer/features/favorites/presentation/bloc/favorites_bloc.dart';
 import 'package:tcompro_customer/features/home/data/product_service.dart';
@@ -63,6 +66,7 @@ class MainApp extends StatelessWidget {
     final authRepository = AuthRepositoryImpl(
       authService: authService,
       tokenCubit: tokenCubit,
+      profileService: profileService
     );
 
     return MultiRepositoryProvider(
@@ -76,14 +80,17 @@ class MainApp extends StatelessWidget {
           BlocProvider<TokenCubit>(
             create: (_) => tokenCubit,
           ),
-          BlocProvider<UserCubit>(
-            create: (context) => UserCubit(
+          BlocProvider<ProfileCubit>(
+            create: (context) => ProfileCubit(
               context.read<AuthRepository>(), 
               profileService,
             ),
           ),
           BlocProvider(
             create: (context) => LoginBloc(authRepository: authRepository),
+          ),
+          BlocProvider(
+            create: (context) => RegisterBloc(authRepository: authRepository),
           ),
           BlocProvider(
             create: (context) => 
@@ -99,9 +106,14 @@ class MainApp extends StatelessWidget {
           ),
         ],
         child: MaterialApp(
+          title: "T'Compro Clientes",
           debugShowCheckedModeBanner: false,
           theme: theme.light(),
           darkTheme: theme.dark(),
+          routes: {
+            AppRoutes.registerRoute: (context) => const RegisterPage(),
+            AppRoutes.mainRoute: (context) => const MainApp()
+          },
           home: BlocBuilder<TokenCubit, String?>(
             builder: (context, token) {
               if (token == null) {

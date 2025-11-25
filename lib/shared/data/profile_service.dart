@@ -11,7 +11,7 @@ class ProfileService {
   Future<Profile> fetchProfile({required String authId, required String role}) async {
     try {
       final response = await _dio.get(
-        "${ApiConstants.authEndpoint}/by-auth-id/$authId",
+        "${ApiConstants.profilesEndpoint}/by-auth-id/$authId",
         queryParameters: {
           'role': role,
         },
@@ -22,6 +22,30 @@ class ProfileService {
     } catch (e, st) {
       debugPrint('Error fetchProfile: $e\n$st');
       throw Exception('Failed to load profile: $e');
+    }
+  }
+
+  Future<Profile> uploadProfile({required String authId, required String firstName, required String lastName, required String email, required String phone}) async {
+    final requestBody = {
+      'authId': authId,
+      'firstName': firstName,
+      'lastName': lastName,
+      'email': email,
+      'phone': phone,
+      'role': ApiConstants.customerRole
+    };
+    
+    try {
+      final response = await _dio.post(
+        ApiConstants.profilesEndpoint, 
+        data: requestBody,
+      );
+
+      return Profile.fromJson(response.data);
+      
+    } catch (e, st) {
+      debugPrint('Error creating profile: $e\n$st');
+      throw Exception('Failed to create profile: $e');
     }
   }
 }

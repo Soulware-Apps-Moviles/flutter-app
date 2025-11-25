@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tcompro_customer/core/enums/app_routes.dart';
 import 'package:tcompro_customer/features/auth/presentation/blocs/login_bloc.dart';
 import 'package:tcompro_customer/features/auth/presentation/blocs/login_event.dart';
 import 'package:tcompro_customer/features/auth/presentation/blocs/login_state.dart';
@@ -73,7 +74,7 @@ class LoginPage extends StatelessWidget {
                   // Footer
                   RegisterFooter(
                     onTapRegister: () {
-                      debugPrint("Navigate to Register");
+                      Navigator.of(context).pushNamed(AppRoutes.registerRoute);
                     },
                   ),
                 ],

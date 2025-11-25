@@ -28,7 +28,7 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<UserCubit, Profile?>(
+    return BlocListener<ProfileCubit, Profile?>(
       listener: (context, userProfile) {
         if (userProfile != null) {
           context.read<ShoppingListsBloc>().add(
