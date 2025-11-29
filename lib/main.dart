@@ -18,13 +18,11 @@ import 'package:tcompro_customer/features/auth/presentation/blocs/login_bloc.dar
 import 'package:tcompro_customer/features/auth/presentation/blocs/register_bloc.dart';
 import 'package:tcompro_customer/features/auth/presentation/pages/login_page.dart';
 import 'package:tcompro_customer/features/auth/presentation/pages/register_page.dart';
-import 'package:tcompro_customer/features/favorites/data/favorite_service.dart';
+import 'package:tcompro_customer/shared/data/favorite_service.dart';
 import 'package:tcompro_customer/features/favorites/presentation/bloc/favorites_bloc.dart';
 import 'package:tcompro_customer/shared/data/product_repository_impl.dart';
-import 'package:tcompro_customer/features/home/data/product_service.dart';
-import 'package:tcompro_customer/features/home/domain/category.dart';
+import 'package:tcompro_customer/shared/data/product_service.dart';
 import 'package:tcompro_customer/features/home/presentation/bloc/home_bloc.dart';
-import 'package:tcompro_customer/features/home/presentation/bloc/home_event.dart';
 import 'package:tcompro_customer/features/main/main_page.dart';
 import 'package:tcompro_customer/features/shopping-lists/data/shopping_list_service.dart';
 import 'package:tcompro_customer/features/shopping-lists/presentation/bloc/shopping_lists_bloc.dart';
@@ -72,7 +70,8 @@ class MainApp extends StatelessWidget {
     );
 
     final productRepository = ProductRepositoryImpl(
-      service: productService
+      productService: productService,
+      favoriteService: favoriteService
     );
 
     return MultiRepositoryProvider(
@@ -102,7 +101,7 @@ class MainApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => 
-            HomeBloc(repository: productRepository)..add(LoadProductsEvent(category: CategoryType.ALL))
+            HomeBloc(repository: productRepository)
           ),
           BlocProvider(
             create: (context) => 

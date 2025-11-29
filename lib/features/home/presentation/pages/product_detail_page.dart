@@ -104,7 +104,7 @@ class ProductDetailPage extends StatelessWidget {
 
               BlocBuilder<HomeBloc, HomeState>(
                 bloc: BlocProvider.of<HomeBloc>(context)
-                  ..add(LoadProductsEvent(category: product.category)),
+                  ..add(CategoryChanged(category: product.category)), // AQUI
                 builder: (context, state) {
                   switch (state.status) {
                     case Status.loading:

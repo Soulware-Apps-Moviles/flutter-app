@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tcompro_customer/core/data/cubits/profile_cubit.dart';
+import 'package:tcompro_customer/features/home/domain/category.dart';
+import 'package:tcompro_customer/features/home/presentation/bloc/home_bloc.dart';
+import 'package:tcompro_customer/features/home/presentation/bloc/home_event.dart';
 import 'package:tcompro_customer/shared/domain/profile.dart';
 import 'package:tcompro_customer/features/favorites/presentation/bloc/favorites_bloc.dart';
 import 'package:tcompro_customer/features/favorites/presentation/bloc/favorites_event.dart';
@@ -31,6 +34,9 @@ class _MainPageState extends State<MainPage> {
     return BlocListener<ProfileCubit, Profile?>(
       listener: (context, userProfile) {
         if (userProfile != null) {
+          context.read<HomeBloc>().add(
+            LoadProductsEvent(customerId: userProfile.id, category: CategoryType.ALL)
+          );
           context.read<ShoppingListsBloc>().add(
             LoadShoppingListsEvent(customerId: userProfile.id)
           );

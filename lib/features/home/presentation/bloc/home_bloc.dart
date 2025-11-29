@@ -12,27 +12,34 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   HomeBloc({required this.repository}) : super(HomeState()) {
     on<LoadProductsEvent>(_loadProducts);
-    on<SearchProductsEvent>(_searchProducts);
+    on<SearchQuerySent>(_searchProducts);
+    on<CategoryChanged>(_categoryChanged);
   }
 
   FutureOr<void> _loadProducts(
     LoadProductsEvent event,
     Emitter<HomeState> emit,
   ) async {
-    if (state.selectedCategory == event.category && state.products.isNotEmpty) {
+    if (state.selectedCategory == event.category && state.products.isNotEmpty && state.customerId == event.customerId) {
       return;
     }
+    
     emit(
-      state.copyWith(selectedCategory: event.category, status: Status.loading),
+      state.copyWith(
+        selectedCategory: event.category, 
+        status: Status.loading,
+        customerId: event.customerId,
+      ),
     );
     List<Product> products = [];
     try {
-      if (event.category == CategoryType.ALL) {
-        products = await repository.fetchProducts();
-      } else {
-        products =
-            await repository.fetchProducts(category: event.category.name);
-      }
+      final CategoryType? categoryFilter = event.category == CategoryType.ALL ? null : event.category;
+
+      products = await repository.fetchProducts(
+        customerId: event.customerId,
+        category: categoryFilter,
+      );
+
       emit(
         state.copyWith(products: products, status: Status.loaded),
       );
@@ -44,20 +51,65 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   FutureOr<void> _searchProducts(
-    SearchProductsEvent event,
+    SearchQuerySent event,
     Emitter<HomeState> emit,
   ) async {
+    final customerId = state.customerId;
+
+    if (customerId == null) {
+      emit(state.copyWith(status: Status.error, errorMessage: "Customer ID not loaded for search."));
+      return;
+    }
+
     emit(state.copyWith(status: Status.loading));
     try {
       final products = await repository.fetchProducts(
-        name: event.name.isEmpty ? null : event.name,
-        category: event.category == CategoryType.ALL.toString()
+        customerId: customerId,
+        name: event.query.isEmpty ? null : event.query,
+        category: event.category == CategoryType.ALL
             ? null
             : event.category,
       );
       emit(state.copyWith(products: products, status: Status.loaded));
     } catch (e) {
       emit(state.copyWith(status: Status.error, errorMessage: e.toString()));
+    }
+  }
+
+  FutureOr<void> _categoryChanged(
+    CategoryChanged event,
+    Emitter<HomeState> emit,
+  ) async {
+    final customerId = state.customerId;
+
+    if (customerId == null) {
+      emit(state.copyWith(status: Status.error, errorMessage: "Customer ID not loaded. Cannot change category."));
+      return;
+    }
+
+    if (state.selectedCategory == event.category && state.products.isNotEmpty) {
+      return;
+    }
+
+    emit(
+      state.copyWith(selectedCategory: event.category, status: Status.loading),
+    );
+
+    try {
+      final CategoryType? categoryFilter = event.category == CategoryType.ALL ? null : event.category;
+
+      final products = await repository.fetchProducts(
+        customerId: customerId,
+        category: categoryFilter,
+      );
+
+      emit(
+        state.copyWith(products: products, status: Status.loaded),
+      );
+    } catch (e) {
+      emit(
+        state.copyWith(status: Status.error, errorMessage: e.toString()),
+      );
     }
   }
 }

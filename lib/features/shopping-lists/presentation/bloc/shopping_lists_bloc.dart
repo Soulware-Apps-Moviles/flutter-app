@@ -17,10 +17,8 @@ class ShoppingListsBloc extends Bloc<ShoppingListsEvent, ShoppingListsState> {
   Future<void> _onLoadShoppingLists(
       LoadShoppingListsEvent event, Emitter<ShoppingListsState> emit) async {
     try {
-      // 1. Guardamos el ID en el estado y ponemos loading
       emit(state.copyWith(loading: true, customerId: event.customerId));
       
-      // 2. Usamos el ID que vino en el evento
       final lists = await service.fetchShoppingLists(customerId: event.customerId);
       
       emit(state.copyWith(shoppingLists: lists, loading: false));
@@ -31,7 +29,6 @@ class ShoppingListsBloc extends Bloc<ShoppingListsEvent, ShoppingListsState> {
 
   Future<void> _searchShoppingLists(
       SearchShoppingListsEvent event, Emitter<ShoppingListsState> emit) async {
-    // 3. Recuperamos el ID del estado
     final customerId = state.customerId;
     if (customerId == null) return; // Protección si no se ha cargado usuario
 
@@ -49,7 +46,6 @@ class ShoppingListsBloc extends Bloc<ShoppingListsEvent, ShoppingListsState> {
 
   Future<void> _onCreateShoppingList(
       CreateShoppingListEvent event, Emitter<ShoppingListsState> emit) async {
-    // 4. Recuperamos el ID del estado
     final customerId = state.customerId;
     if (customerId == null) return;
 

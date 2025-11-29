@@ -22,6 +22,20 @@ class FavoriteService {
     }
   }
 
+  Future<List<int>> getFavoritesIds(int customerId) async {
+    try {
+      final response = await _dio.get(
+        '${ApiConstants.favoritesEndpoint}/by-customer/$customerId',
+      );
+
+      final List data = response.data;
+      return data.map((e) => Favorite.fromJson(e).id).toList();
+    } catch (e, st) {
+      debugPrint('Error fetchFavorites: $e\n$st');
+      throw Exception('Failed to load favorites: $e');
+    }
+  }
+
   Future<void> addFavorite(int customerId, int productId) async {
     try {
       await _dio.post(

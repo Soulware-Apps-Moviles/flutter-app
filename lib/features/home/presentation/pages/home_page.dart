@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tcompro_customer/features/home/domain/category.dart';
 import 'package:tcompro_customer/features/home/presentation/bloc/home_bloc.dart';
 import 'package:tcompro_customer/features/home/presentation/bloc/home_event.dart';
 import 'package:tcompro_customer/features/home/presentation/bloc/home_state.dart';
@@ -22,11 +21,9 @@ class HomePage extends StatelessWidget {
           // Search Bar
           SearchBarWidget(
             onSearch: (query) {
-              bloc.add(SearchProductsEvent(
-                name: query,
-                category: bloc.state.selectedCategory == CategoryType.ALL
-                    ? CategoryType.ALL.toString()
-                    : bloc.state.selectedCategory.name,
+              bloc.add(SearchQuerySent(
+                query: query,
+                category: bloc.state.selectedCategory
               ));
             },
           ),
@@ -35,7 +32,7 @@ class HomePage extends StatelessWidget {
           CategoryFilter(
             selected: context.watch<HomeBloc>().state.selectedCategory,
             onSelected: (category) {
-              bloc.add(LoadProductsEvent(category: category));
+              bloc.add(CategoryChanged(category: category));
             },
           ),
 
