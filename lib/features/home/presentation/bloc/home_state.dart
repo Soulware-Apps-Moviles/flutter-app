@@ -1,5 +1,5 @@
 import 'package:tcompro_customer/features/home/domain/category.dart';
-import 'package:tcompro_customer/features/home/domain/product.dart';
+import 'package:tcompro_customer/shared/domain/product.dart';
 
 enum Status { initial, loading, loaded, error }
 

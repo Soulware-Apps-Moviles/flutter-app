@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:tcompro_customer/core/constants/api_constants.dart';
-import 'package:tcompro_customer/features/home/domain/product.dart';
+import 'package:tcompro_customer/shared/domain/product.dart';
 
 class ProductService {
   final Dio _dio;

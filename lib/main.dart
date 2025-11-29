@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tcompro_customer/core/constants/api_constants.dart';
+import 'package:tcompro_customer/core/data/cubits/shopping_bag_cubit.dart';
 import 'package:tcompro_customer/core/enums/app_routes.dart';
 import 'package:tcompro_customer/core/constants/supabase_constants.dart';
 import 'package:tcompro_customer/core/data/cubits/profile_cubit.dart';
@@ -19,6 +20,7 @@ import 'package:tcompro_customer/features/auth/presentation/pages/login_page.dar
 import 'package:tcompro_customer/features/auth/presentation/pages/register_page.dart';
 import 'package:tcompro_customer/features/favorites/data/favorite_service.dart';
 import 'package:tcompro_customer/features/favorites/presentation/bloc/favorites_bloc.dart';
+import 'package:tcompro_customer/shared/data/product_repository_impl.dart';
 import 'package:tcompro_customer/features/home/data/product_service.dart';
 import 'package:tcompro_customer/features/home/domain/category.dart';
 import 'package:tcompro_customer/features/home/presentation/bloc/home_bloc.dart';
@@ -69,6 +71,10 @@ class MainApp extends StatelessWidget {
       profileService: profileService
     );
 
+    final productRepository = ProductRepositoryImpl(
+      service: productService
+    );
+
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<AuthRepository>(create: (_) => authRepository),
@@ -86,6 +92,8 @@ class MainApp extends StatelessWidget {
               profileService,
             ),
           ),
+          BlocProvider(create: (context) => ShoppingBagCubit(),
+          ),
           BlocProvider(
             create: (context) => LoginBloc(authRepository: authRepository),
           ),
@@ -94,7 +102,7 @@ class MainApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => 
-            HomeBloc(service: productService)..add(LoadProductsEvent(category: CategoryType.ALL))
+            HomeBloc(repository: productRepository)..add(LoadProductsEvent(category: CategoryType.ALL))
           ),
           BlocProvider(
             create: (context) => 
