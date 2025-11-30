@@ -24,3 +24,8 @@ class ToggleFavorite extends HomeEvent {
   final Product product;
   ToggleFavorite({required this.product}) : super();
 }
+
+class ProductUpdatedFromStream extends HomeEvent {
+  final Product product;
+  ProductUpdatedFromStream({required this.product});
+}

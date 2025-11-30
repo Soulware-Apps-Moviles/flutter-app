@@ -9,12 +9,40 @@ import 'package:tcompro_customer/shared/domain/product.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final ProductRepository repository;
+  late final StreamSubscription<Product> _productSubscription;
 
   HomeBloc({required this.repository}) : super(HomeState()) {
     on<LoadProductsEvent>(_loadProducts);
     on<SearchQuerySent>(_searchProducts);
     on<CategoryChanged>(_categoryChanged);
     on<ToggleFavorite>(_toggleFavorite);
+    on<ProductUpdatedFromStream>(_onProductUpdatedFromStream);
+
+    _productSubscription = repository.productUpdates.listen((productUpdated) {
+      add(ProductUpdatedFromStream(product: productUpdated));
+    });
+  }
+
+  @override
+  Future<void> close() {
+    _productSubscription.cancel();
+    return super.close();
+  }
+
+  FutureOr<void> _onProductUpdatedFromStream(
+    ProductUpdatedFromStream event,
+    Emitter<HomeState> emit,
+  ) {
+    final currentProducts = state.products;
+    
+    final index = currentProducts.indexWhere((p) => p.id == event.product.id);
+
+    if (index != -1) {
+      final updatedList = List<Product>.from(currentProducts);
+      updatedList[index] = event.product;
+      
+      emit(state.copyWith(products: updatedList));
+    }
   }
 
   FutureOr<void> _loadProducts(
@@ -119,33 +147,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     Emitter<HomeState> emit,
   ) async {
     final customerId = state.customerId;
-
-    if (customerId == null) {
-      emit(state.copyWith(status: Status.error, errorMessage: "Customer ID not loaded. Cannot toggle favorite."));
-      return;
-    }
-
-    final currentProducts = state.products;
-    final index = currentProducts.indexWhere((p) => p.id == event.product.id);
-
-    if (index == -1) return;
-
-    final currentProduct = currentProducts[index];
-    final isCurrentlyFavorite = currentProduct.isFavorite;
-
-    final updatedProductsList = List<Product>.from(currentProducts);
-    updatedProductsList[index] = currentProduct.copyWith(isFavorite: !isCurrentlyFavorite);
-    
-    emit(state.copyWith(products: updatedProductsList));
-
+    if (customerId == null) return;
     try {
-      repository.toggleFavorite(customerId: customerId, product: currentProduct);
+      repository.toggleFavorite(customerId: customerId, product: event.product);
     } catch (e) {
-      final rollbackProductsList = List<Product>.from(currentProducts);
-      rollbackProductsList[index] = currentProduct;
-      
-      emit(state.copyWith(
-        products: rollbackProductsList,
+       emit(state.copyWith(
         status: Status.error, 
         errorMessage: "Error toggling favorite: ${e.toString()}"
       ));
