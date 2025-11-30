@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:tcompro_customer/features/home/domain/category.dart';
+import 'package:tcompro_customer/shared/data/local/shopping_bag_dao.dart';
 import 'package:tcompro_customer/shared/data/remote/favorite_service.dart';
 import 'package:tcompro_customer/shared/data/remote/product_service.dart';
 import 'package:tcompro_customer/shared/domain/product_repository.dart';
@@ -9,17 +10,18 @@ import 'package:tcompro_customer/shared/domain/product.dart';
 class ProductRepositoryImpl implements ProductRepository {
   final ProductService _productService;
   final FavoriteService _favoriteService;
+  final ShoppingBagDao _shoppingBagDao;
 
   final _productUpdateController = StreamController<Product>.broadcast();
 
   @override
   Stream<Product> get productUpdates => _productUpdateController.stream;
 
-  ProductRepositoryImpl(
-      {required ProductService productService,
-      required FavoriteService favoriteService})
-      : _productService = productService,
-        _favoriteService = favoriteService;
+  ProductRepositoryImpl({
+    required ProductService productService,
+    required FavoriteService favoriteService,
+    required ShoppingBagDao shopping_bag_dao
+  }) : _productService = productService, _favoriteService = favoriteService, _shoppingBagDao = shopping_bag_dao;
 
   @override
   Future<List<Product>> fetchProducts(
