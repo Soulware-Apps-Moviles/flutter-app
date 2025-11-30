@@ -1,20 +1,31 @@
 import 'package:tcompro_customer/features/home/domain/category.dart';
+import 'package:tcompro_customer/shared/domain/product.dart';
 
-abstract class HomeEvent {
-  final CategoryType category;
-  HomeEvent({required this.category});
-}
+abstract class HomeEvent {}
 
 class LoadProductsEvent extends HomeEvent {
   final int customerId;
-  LoadProductsEvent({required this.customerId, required super.category});
+  final CategoryType category;
+  LoadProductsEvent({required this.customerId, required this.category});
 }
 
 class CategoryChanged extends HomeEvent {
-  CategoryChanged({required super.category});
+  final CategoryType category;
+  CategoryChanged({required this.category});
 }
 
 class SearchQuerySent extends HomeEvent {
   final String query;
-  SearchQuerySent({required this.query, required super.category});
+  final CategoryType category;
+  SearchQuerySent({required this.query, required this.category});
+}
+
+class ToggleFavorite extends HomeEvent {
+  final Product product;
+  ToggleFavorite({required this.product}) : super();
+}
+
+class AddToShoppingBag extends HomeEvent {
+  final Product product;
+  AddToShoppingBag({required this.product}) : super();
 }

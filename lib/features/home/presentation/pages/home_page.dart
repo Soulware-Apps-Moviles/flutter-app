@@ -73,8 +73,11 @@ class HomePage extends StatelessWidget {
                           },
                           child: ProductCard(
                             product: product,
+                            onTapFavorite: () {
+                              bloc.add(ToggleFavorite(product: product));
+                            },
                             onAddToCart: () {
-                              debugPrint("Add ${product.name}");
+                              debugPrint("Bag ${product.name}");
                             },
                           ),
                         );

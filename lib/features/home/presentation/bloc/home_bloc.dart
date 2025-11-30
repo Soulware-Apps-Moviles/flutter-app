@@ -14,6 +14,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<LoadProductsEvent>(_loadProducts);
     on<SearchQuerySent>(_searchProducts);
     on<CategoryChanged>(_categoryChanged);
+    on<ToggleFavorite>(_toggleFavorite);
   }
 
   FutureOr<void> _loadProducts(
@@ -110,6 +111,44 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       emit(
         state.copyWith(status: Status.error, errorMessage: e.toString()),
       );
+    }
+  }
+
+  FutureOr<void> _toggleFavorite(
+    ToggleFavorite event,
+    Emitter<HomeState> emit,
+  ) async {
+    final customerId = state.customerId;
+
+    if (customerId == null) {
+      emit(state.copyWith(status: Status.error, errorMessage: "Customer ID not loaded. Cannot toggle favorite."));
+      return;
+    }
+
+    final currentProducts = state.products;
+    final index = currentProducts.indexWhere((p) => p.id == event.product.id);
+
+    if (index == -1) return;
+
+    final currentProduct = currentProducts[index];
+    final isCurrentlyFavorite = currentProduct.isFavorite;
+
+    final updatedProductsList = List<Product>.from(currentProducts);
+    updatedProductsList[index] = currentProduct.copyWith(isFavorite: !isCurrentlyFavorite);
+    
+    emit(state.copyWith(products: updatedProductsList));
+
+    try {
+      repository.toggleFavorite(customerId: customerId, product: currentProduct);
+    } catch (e) {
+      final rollbackProductsList = List<Product>.from(currentProducts);
+      rollbackProductsList[index] = currentProduct;
+      
+      emit(state.copyWith(
+        products: rollbackProductsList,
+        status: Status.error, 
+        errorMessage: "Error toggling favorite: ${e.toString()}"
+      ));
     }
   }
 }

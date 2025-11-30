@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:tcompro_customer/shared/domain/product.dart';
 import 'package:tcompro_customer/features/favorites/presentation/widgets/favorite_button.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
   final VoidCallback onAddToCart;
+  final VoidCallback onTapFavorite;
 
   const ProductCard({
     super.key,
     required this.product,
-    required this.onAddToCart
+    required this.onAddToCart,
+    required this.onTapFavorite
   });
 
   @override
@@ -45,8 +46,8 @@ class ProductCard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: FavoriteButton(
-                  productId: product.id,
-                  customerId: int.tryParse(dotenv.env['CUSTOMER_ID'] ?? '') ?? 0, // TO TEST
+                  onTap: onTapFavorite,
+                  isFavorite: product.isFavorite,
                 ),
               ),
             ],
@@ -81,7 +82,7 @@ class ProductCard extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: onAddToCart,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xffc35215),
+                  backgroundColor: const Color(0xFFDD6529),
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),

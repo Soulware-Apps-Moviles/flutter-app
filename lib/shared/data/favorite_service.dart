@@ -29,7 +29,7 @@ class FavoriteService {
       );
 
       final List data = response.data;
-      return data.map((e) => Favorite.fromJson(e).id).toList();
+      return data.map((e) => Favorite.fromJson(e).productId).toList();
     } catch (e, st) {
       debugPrint('Error fetchFavorites: $e\n$st');
       throw Exception('Failed to load favorites: $e');

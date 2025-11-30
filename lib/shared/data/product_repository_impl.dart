@@ -30,7 +30,19 @@ Future<List<Product>> fetchProducts({required int customerId, CategoryType? cate
 }
 
   @override
-  void addToShoppingBag() {
-    
+  void addToShoppingBag({required int customerId, required Product product}) {
+    // TODO: implement addToShoppingBag
+  }
+
+  @override
+  Future<void> toggleFavorite({required int customerId, required Product product}) async {
+    final productId = product.id;
+    final isFavorite = product.isFavorite;
+
+    if (isFavorite) {
+      await _favoriteService.removeFavorite(customerId, productId);
+    } else {
+      await _favoriteService.addFavorite(customerId, productId);
+    }
   }
 }

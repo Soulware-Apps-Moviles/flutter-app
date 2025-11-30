@@ -3,8 +3,6 @@ import 'package:tcompro_customer/shared/domain/product.dart';
 
 abstract class ProductRepository {
   Future<List<Product>> fetchProducts({required int customerId, CategoryType? category, String? name});
-
-  void addToShoppingBag();
-
-  
+  void addToShoppingBag({required int customerId, required Product product});
+  void toggleFavorite({required int customerId, required Product product});
 }

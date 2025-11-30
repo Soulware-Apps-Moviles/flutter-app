@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:tcompro_customer/shared/domain/product.dart';
 import 'package:tcompro_customer/features/home/presentation/bloc/home_bloc.dart';
 import 'package:tcompro_customer/features/home/presentation/bloc/home_event.dart';
@@ -31,8 +30,10 @@ class ProductDetailPage extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(right: 12.0),
           child: FavoriteButton(
-            productId: product.id,
-            customerId: int.tryParse(dotenv.env['CUSTOMER_ID'] ?? '') ?? 0, // TO TEST
+            onTap: () {
+              debugPrint("Favorite ${product.name}");
+            },
+            isFavorite: product.isFavorite
           ),
         ),
       ],
@@ -133,8 +134,11 @@ class ProductDetailPage extends StatelessWidget {
                           final relatedProduct = state.products[index];
                           return ProductCard(
                             product: relatedProduct,
+                            onTapFavorite: () {
+                              debugPrint("Favorite ${product.name}");
+                            },
                             onAddToCart: () {
-                              debugPrint("Add ${relatedProduct.name}");
+                              debugPrint("Bag ${product.name}");
                             },
                           );
                         },
