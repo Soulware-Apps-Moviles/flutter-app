@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:tcompro_customer/features/home/domain/category.dart';
-import 'package:tcompro_customer/shared/data/favorite_service.dart';
-import 'package:tcompro_customer/shared/data/product_service.dart';
+import 'package:tcompro_customer/shared/data/remote/favorite_service.dart';
+import 'package:tcompro_customer/shared/data/remote/product_service.dart';
 import 'package:tcompro_customer/shared/domain/product_repository.dart';
 import 'package:tcompro_customer/shared/domain/product.dart';
 

@@ -18,16 +18,16 @@ import 'package:tcompro_customer/features/auth/presentation/blocs/login_bloc.dar
 import 'package:tcompro_customer/features/auth/presentation/blocs/register_bloc.dart';
 import 'package:tcompro_customer/features/auth/presentation/pages/login_page.dart';
 import 'package:tcompro_customer/features/auth/presentation/pages/register_page.dart';
-import 'package:tcompro_customer/shared/data/favorite_service.dart';
+import 'package:tcompro_customer/shared/data/remote/favorite_service.dart';
 import 'package:tcompro_customer/features/favorites/presentation/bloc/favorites_bloc.dart';
-import 'package:tcompro_customer/shared/data/product_repository_impl.dart';
-import 'package:tcompro_customer/shared/data/product_service.dart';
+import 'package:tcompro_customer/shared/data/remote/product_repository_impl.dart';
+import 'package:tcompro_customer/shared/data/remote/product_service.dart';
 import 'package:tcompro_customer/features/home/presentation/bloc/home_bloc.dart';
 import 'package:tcompro_customer/features/main/main_page.dart';
 import 'package:tcompro_customer/features/shopping-lists/data/shopping_list_service.dart';
 import 'package:tcompro_customer/features/shopping-lists/presentation/bloc/shopping_lists_bloc.dart';
 import 'package:tcompro_customer/features/auth/data/auth_service.dart';
-import 'package:tcompro_customer/shared/data/profile_service.dart';
+import 'package:tcompro_customer/shared/data/remote/profile_service.dart';
 import 'package:tcompro_customer/shared/domain/product_repository.dart';
 
 Future<void> main() async {

@@ -29,3 +29,8 @@ class ProductUpdatedFromStream extends HomeEvent {
   final Product product;
   ProductUpdatedFromStream({required this.product});
 }
+
+class AddProductToBag extends HomeEvent {
+  final Product product;
+  AddProductToBag({required this.product});
+}

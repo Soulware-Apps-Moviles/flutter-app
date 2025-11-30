@@ -4,7 +4,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tcompro_customer/core/data/cubits/token_cubit.dart';
 import 'package:tcompro_customer/features/auth/data/auth_service.dart';
 import 'package:tcompro_customer/features/auth/domain/auth_repository.dart';
-import 'package:tcompro_customer/shared/data/profile_service.dart';
+import 'package:tcompro_customer/shared/data/remote/profile_service.dart';
 import 'package:tcompro_customer/shared/domain/profile.dart';
 
 class AuthRepositoryImpl implements AuthRepository {

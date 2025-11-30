@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tcompro_customer/core/constants/api_constants.dart';
 import 'package:tcompro_customer/features/auth/domain/auth_repository.dart';
-import 'package:tcompro_customer/shared/data/profile_service.dart';
+import 'package:tcompro_customer/shared/data/remote/profile_service.dart';
 import 'package:tcompro_customer/shared/domain/profile.dart';
 
 // Its a bloc-type class that handles the in-memory state of the user's Profile
