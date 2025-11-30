@@ -24,8 +24,3 @@ class ToggleFavorite extends HomeEvent {
   final Product product;
   ToggleFavorite({required this.product}) : super();
 }
-
-class AddToShoppingBag extends HomeEvent {
-  final Product product;
-  AddToShoppingBag({required this.product}) : super();
-}
