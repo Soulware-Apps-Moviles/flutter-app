@@ -31,6 +31,16 @@ class ShoppingBagDao {
     );
   }
 
+  Future<void> updateFavoriteStatus(int productId, bool isFavorite) async {
+    final Database database = await AppDatabase().database;
+    await database.update(
+      'cart_items',
+      {'is_favorite': isFavorite ? 1 : 0},
+      where: 'product_id = ?',
+      whereArgs: [productId],
+    );
+  }
+
   Future<void> delete(int productId) async {
     final Database database = await AppDatabase().database;
     await database.delete(

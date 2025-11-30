@@ -4,6 +4,7 @@ import 'package:tcompro_customer/features/home/domain/category.dart';
 import 'package:tcompro_customer/shared/data/local/shopping_bag_dao.dart';
 import 'package:tcompro_customer/shared/data/remote/favorite_service.dart';
 import 'package:tcompro_customer/shared/data/remote/product_service.dart';
+import 'package:tcompro_customer/shared/domain/bag_item.dart';
 import 'package:tcompro_customer/shared/domain/product_repository.dart';
 import 'package:tcompro_customer/shared/domain/product.dart';
 
@@ -49,6 +50,8 @@ class ProductRepositoryImpl implements ProductRepository {
     final updatedProduct = product.copyWith(isFavorite: !product.isFavorite);
     _productUpdateController.add(updatedProduct);
 
+    await _shoppingBagDao.updateFavoriteStatus(updatedProduct.id, updatedProduct.isFavorite);
+
     try {
       final productId = product.id;
       final isFavorite = product.isFavorite;
@@ -60,12 +63,42 @@ class ProductRepositoryImpl implements ProductRepository {
       }
     } catch (e) {
       _productUpdateController.add(product);
+      await _shoppingBagDao.updateFavoriteStatus(product.id, product.isFavorite);
       rethrow;
     }
   }
   
   @override
-  void addToShoppingBag({required int customerId, required Product product}) {
-    // TODO: implement addToShoppingBag
+  Future<void> addToShoppingBag({required int customerId, required Product product}) async {  
+    final currentItems = await _shoppingBagDao.fetchBagItems();
+    final existingIndex = currentItems.indexWhere((item) => item.product.id == product.id);
+
+    if (existingIndex != -1) {
+      final existingItem = currentItems[existingIndex];
+      await _shoppingBagDao.updateQuantity(product.id, existingItem.quantity + 1);
+    } else {
+      final newItem = BagItem(product: product, quantity: 1);
+      await _shoppingBagDao.insertOrUpdate(newItem);
+    }
+  }
+
+  @override
+  Future<void> removeFromShoppingBag({required int customerId, required Product product}) async {
+    final currentItems = await _shoppingBagDao.fetchBagItems();
+    final existingIndex = currentItems.indexWhere((item) => item.product.id == product.id);
+
+    if (existingIndex != -1) {
+       await _shoppingBagDao.delete(product.id);
+    }
+  }
+
+  @override
+  Future<void> clearShoppingBag({required int customerId}) async {
+    await _shoppingBagDao.clearAll();
+  }
+
+  @override
+  Future<List<BagItem>> getShoppingBagItems() async {
+    return await _shoppingBagDao.fetchBagItems();
   }
 }

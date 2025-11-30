@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tcompro_customer/core/data/cubits/shopping_bag_cubit.dart';
 import 'package:tcompro_customer/features/home/presentation/bloc/home_bloc.dart';
 import 'package:tcompro_customer/features/home/presentation/bloc/home_event.dart';
 import 'package:tcompro_customer/features/home/presentation/bloc/home_state.dart';
@@ -77,7 +78,13 @@ class HomePage extends StatelessWidget {
                               bloc.add(ToggleFavorite(product: product));
                             },
                             onAddToCart: () {
-                              bloc.add(AddProductToBag(product: product));
+                              context.read<ShoppingBagCubit>().addProduct(product);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text("${product.name} added to shopping bag"),
+                                  duration: const Duration(seconds: 1),
+                                ),
+                              );
                             },
                           ),
                         );

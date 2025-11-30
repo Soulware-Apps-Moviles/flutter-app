@@ -17,7 +17,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<CategoryChanged>(_categoryChanged);
     on<ToggleFavorite>(_toggleFavorite);
     on<ProductUpdatedFromStream>(_onProductUpdatedFromStream);
-    on<AddProductToBag>(_addProductToBag);
 
     _productSubscription = repository.productUpdates.listen((productUpdated) {
       add(ProductUpdatedFromStream(product: productUpdated));
@@ -157,12 +156,5 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         errorMessage: "Error toggling favorite: ${e.toString()}"
       ));
     }
-  }
-
-  FutureOr<void> _addProductToBag(
-    AddProductToBag event,
-    Emitter<HomeState> emit,
-  ) async {
-    
   }
 }

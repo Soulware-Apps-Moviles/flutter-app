@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tcompro_customer/core/data/cubits/profile_cubit.dart';
+import 'package:tcompro_customer/core/data/cubits/shopping_bag_cubit.dart';
 import 'package:tcompro_customer/features/home/domain/category.dart';
 import 'package:tcompro_customer/features/home/presentation/bloc/home_bloc.dart';
 import 'package:tcompro_customer/features/home/presentation/bloc/home_event.dart';
@@ -43,6 +44,7 @@ class _MainPageState extends State<MainPage> {
           context.read<FavoritesBloc>().add(
             LoadFavoritesEvent(customerId: userProfile.id)
           );
+          context.read<ShoppingBagCubit>().updateCustomerId(userProfile.id);
         }
       },
       child: Scaffold(

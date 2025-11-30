@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tcompro_customer/core/data/cubits/shopping_bag_cubit.dart';
 import 'package:tcompro_customer/features/favorites/presentation/widgets/favorite_button.dart';
 import 'package:tcompro_customer/features/home/presentation/bloc/product_detail_bloc.dart';
 import 'package:tcompro_customer/features/home/presentation/bloc/product_detail_event.dart';
@@ -173,7 +174,13 @@ class _RelatedProductsGrid extends StatelessWidget {
           onTapFavorite: () {
           },
           onAddToCart: () {
-            debugPrint("Bag ${relatedProduct.name}");
+            context.read<ShoppingBagCubit>().addProduct(relatedProduct);
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text("${relatedProduct.name} added to shopping bag"),
+                duration: const Duration(seconds: 1),
+              ),
+            );
           },
         );
       },

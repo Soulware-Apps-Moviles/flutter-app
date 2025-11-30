@@ -97,7 +97,9 @@ class MainApp extends StatelessWidget {
               profileService,
             ),
           ),
-          BlocProvider(create: (context) => ShoppingBagCubit(),
+          BlocProvider(create: (context) => ShoppingBagCubit(
+            productRepository: productRepository
+          ),
           ),
           BlocProvider(
             create: (context) => LoginBloc(authRepository: authRepository),

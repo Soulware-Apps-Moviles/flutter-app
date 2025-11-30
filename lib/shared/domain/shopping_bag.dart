@@ -3,9 +3,11 @@ import 'package:tcompro_customer/shared/domain/bag_item.dart';
 import 'package:tcompro_customer/shared/domain/product.dart';
 
 class ShoppingBag {
-  final List<BagItem> _items = [];
+  final List<BagItem> _items;
 
-  List<BagItem> get items => List.unmodifiable(_items);
+  ShoppingBag() : _items = [];
+  
+  ShoppingBag.fromItems(List<BagItem> items) : _items = List.from(items);
 
   double get totalPrice {
     return _items.fold(0, (sum, item) => sum + item.subtotal);
