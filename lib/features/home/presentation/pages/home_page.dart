@@ -65,9 +65,9 @@ class HomePage extends StatelessWidget {
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(
-                                builder: (_) =>
-                                    ProductDetailPage(product: product),
+                              ProductDetailPage.route(
+                                product: product, 
+                                customerId: context.read<HomeBloc>().state.customerId!,
                               ),
                             );
                           },

@@ -28,6 +28,7 @@ import 'package:tcompro_customer/features/shopping-lists/data/shopping_list_serv
 import 'package:tcompro_customer/features/shopping-lists/presentation/bloc/shopping_lists_bloc.dart';
 import 'package:tcompro_customer/features/auth/data/auth_service.dart';
 import 'package:tcompro_customer/shared/data/profile_service.dart';
+import 'package:tcompro_customer/shared/domain/product_repository.dart';
 
 Future<void> main() async {
   await dotenv.load(fileName: ".env");
@@ -78,6 +79,7 @@ class MainApp extends StatelessWidget {
       providers: [
         RepositoryProvider<AuthRepository>(create: (_) => authRepository),
         RepositoryProvider<ProfileService>(create: (_) => profileService),
+        RepositoryProvider<ProductRepository>(create: (_) => productRepository),
         RepositoryProvider<Dio>(create: (_) => dio),
       ],
       child: MultiBlocProvider(
@@ -100,16 +102,13 @@ class MainApp extends StatelessWidget {
             create: (context) => RegisterBloc(authRepository: authRepository),
           ),
           BlocProvider(
-            create: (context) => 
-            HomeBloc(repository: productRepository)
+            create: (context) => HomeBloc(repository: productRepository)
           ),
           BlocProvider(
-            create: (context) => 
-            FavoritesBloc(service: favoriteService)
+            create: (context) => FavoritesBloc(service: favoriteService)
           ),
           BlocProvider(
-            create: (context) => 
-            ShoppingListsBloc(service: shoppingListService)
+            create: (context) => ShoppingListsBloc(service: shoppingListService)
           ),
         ],
         child: MaterialApp(
