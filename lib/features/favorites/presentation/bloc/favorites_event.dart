@@ -1,4 +1,4 @@
-import 'package:tcompro_customer/features/favorites/domain/entities/favorite.dart';
+import 'package:tcompro_customer/features/favorites/domain/favorite.dart';
 
 abstract class FavoritesEvent {
   const FavoritesEvent();
