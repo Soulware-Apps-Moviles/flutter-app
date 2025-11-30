@@ -18,6 +18,7 @@ import 'package:tcompro_customer/features/auth/presentation/blocs/login_bloc.dar
 import 'package:tcompro_customer/features/auth/presentation/blocs/register_bloc.dart';
 import 'package:tcompro_customer/features/auth/presentation/pages/login_page.dart';
 import 'package:tcompro_customer/features/auth/presentation/pages/register_page.dart';
+import 'package:tcompro_customer/features/shopping-bag/presentation/bloc/shopping_bag_bloc.dart';
 import 'package:tcompro_customer/shared/data/local/shopping_bag_dao.dart';
 import 'package:tcompro_customer/shared/data/remote/favorite_service.dart';
 import 'package:tcompro_customer/features/favorites/presentation/bloc/favorites_bloc.dart';
@@ -76,7 +77,7 @@ class MainApp extends StatelessWidget {
     final productRepository = ProductRepositoryImpl(
       productService: productService,
       favoriteService: favoriteService,
-      shopping_bag_dao: shoppingBagDao
+      shoppingBagDao: shoppingBagDao
     );
 
     return MultiRepositoryProvider(
@@ -99,7 +100,7 @@ class MainApp extends StatelessWidget {
           ),
           BlocProvider(create: (context) => ShoppingBagCubit(
             productRepository: productRepository
-          ),
+            ),
           ),
           BlocProvider(
             create: (context) => LoginBloc(authRepository: authRepository),
@@ -116,6 +117,12 @@ class MainApp extends StatelessWidget {
           BlocProvider(
             create: (context) => ShoppingListsBloc(service: shoppingListService)
           ),
+          BlocProvider(
+            create: (context) => ShoppingBagBloc(
+              productRepository: productRepository, 
+              profileCubit: context.read<ProfileCubit>()
+            )
+          )
         ],
         child: MaterialApp(
           title: "T'Compro Clientes",

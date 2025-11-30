@@ -5,6 +5,7 @@ import 'package:tcompro_customer/core/data/cubits/shopping_bag_cubit.dart';
 import 'package:tcompro_customer/features/home/domain/category.dart';
 import 'package:tcompro_customer/features/home/presentation/bloc/home_bloc.dart';
 import 'package:tcompro_customer/features/home/presentation/bloc/home_event.dart';
+import 'package:tcompro_customer/features/shopping-bag/presentation/pages/shopping_bag_page.dart';
 import 'package:tcompro_customer/shared/domain/profile.dart';
 import 'package:tcompro_customer/features/favorites/presentation/bloc/favorites_bloc.dart';
 import 'package:tcompro_customer/features/favorites/presentation/bloc/favorites_event.dart';
@@ -27,8 +28,22 @@ class _MainPageState extends State<MainPage> {
     const HomePage(),
     const ShoppingListsPage(),
     const Center(child: Text('Profile page placeholder')),
-    const Center(child: Text('Shopping bag placeholder')),
   ];
+
+  // I didnt come up with anything better to allow this "Hey Im a special tab" behaviour
+  // At least it will get the job done
+  void _onItemTapped(int index) {
+    if (index == 3) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const ShoppingBagPage()),
+      );
+    } else {
+      setState(() {
+        selectedIndex = index;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,12 +63,12 @@ class _MainPageState extends State<MainPage> {
         }
       },
       child: Scaffold(
-        body: _pages[selectedIndex],
+        body: _pages[selectedIndex], 
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           backgroundColor: const Color(0xFFF5F5F5),
-          currentIndex: selectedIndex,
-          onTap: (index) => setState(() => selectedIndex = index),
+          currentIndex: selectedIndex, 
+          onTap: _onItemTapped,
           selectedItemColor: const Color(0xFFDD6529),
           unselectedItemColor: const Color(0xFF1F1F1F),
           items: const [
@@ -71,7 +86,7 @@ class _MainPageState extends State<MainPage> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.shopping_bag),
-              label: 'Bag',
+              label: 'Bag', // Este botón ahora actúa como un "abrir modal"
             ),
           ],
         ),

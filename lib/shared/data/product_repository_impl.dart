@@ -14,15 +14,19 @@ class ProductRepositoryImpl implements ProductRepository {
   final ShoppingBagDao _shoppingBagDao;
 
   final _productUpdateController = StreamController<Product>.broadcast();
+  final _bagUpdateController = StreamController<void>.broadcast();
 
   @override
   Stream<Product> get productUpdates => _productUpdateController.stream;
 
+  @override
+  Stream<void> get bagUpdates => _bagUpdateController.stream;
+
   ProductRepositoryImpl({
     required ProductService productService,
     required FavoriteService favoriteService,
-    required ShoppingBagDao shopping_bag_dao
-  }) : _productService = productService, _favoriteService = favoriteService, _shoppingBagDao = shopping_bag_dao;
+    required ShoppingBagDao shoppingBagDao
+  }) : _productService = productService, _favoriteService = favoriteService, _shoppingBagDao = shoppingBagDao;
 
   @override
   Future<List<Product>> fetchProducts(
@@ -35,7 +39,7 @@ class ProductRepositoryImpl implements ProductRepository {
     final markedProducts = allProducts.map((product) {
       final isFav = favoriteSet.contains(product.id);
       if (isFav) {
-        return product.copyWith(isFavorite: isFav); // Domain initializes products with isFavoriteFalse
+        return product.copyWith(isFavorite: isFav); 
       }
 
       return product;
@@ -80,6 +84,24 @@ class ProductRepositoryImpl implements ProductRepository {
       final newItem = BagItem(product: product, quantity: 1);
       await _shoppingBagDao.insertOrUpdate(newItem);
     }
+
+    _bagUpdateController.add(null); 
+  }
+
+  @override
+  Future<void> decreaseQuantity({required int customerId, required Product product}) async {
+    final currentItems = await _shoppingBagDao.fetchBagItems();
+    final existingIndex = currentItems.indexWhere((item) => item.product.id == product.id);
+
+    if (existingIndex != -1) {
+      final existingItem = currentItems[existingIndex];
+      if (existingItem.quantity > 1) {
+        await _shoppingBagDao.updateQuantity(product.id, existingItem.quantity - 1);
+      } else {
+        await _shoppingBagDao.delete(product.id);
+      }
+      _bagUpdateController.add(null);
+    }
   }
 
   @override
@@ -89,12 +111,14 @@ class ProductRepositoryImpl implements ProductRepository {
 
     if (existingIndex != -1) {
        await _shoppingBagDao.delete(product.id);
+       _bagUpdateController.add(null);
     }
   }
 
   @override
   Future<void> clearShoppingBag({required int customerId}) async {
     await _shoppingBagDao.clearAll();
+    _bagUpdateController.add(null);
   }
 
   @override
