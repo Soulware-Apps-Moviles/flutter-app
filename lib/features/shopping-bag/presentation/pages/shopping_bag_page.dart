@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tcompro_customer/features/orders/presentation/pages/pick_store_page.dart';
 import 'package:tcompro_customer/features/shopping-bag/presentation/bloc/shopping_bag_bloc.dart';
 import 'package:tcompro_customer/features/shopping-bag/presentation/bloc/shopping_bag_event.dart';
 import 'package:tcompro_customer/features/shopping-bag/presentation/bloc/shopping_bag_state.dart';
@@ -88,8 +89,6 @@ class _TotalBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = context.read<ShoppingBagBloc>();
-
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -130,7 +129,11 @@ class _TotalBar extends StatelessWidget {
             width: double.infinity,
             child: ElevatedButton(
               onPressed: () {
-                bloc.add(ProceedToStoreSelection());
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const PickStorePage(),
+                  ),
+                );
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFFDD6529),

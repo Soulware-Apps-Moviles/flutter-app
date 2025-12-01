@@ -20,7 +20,3 @@ class RemoveItemFromBag extends ShoppingBagEvent {
 }
 
 class ClearShoppingBag extends ShoppingBagEvent {}
-
-class ProceedToStoreSelection extends ShoppingBagEvent {
-  ProceedToStoreSelection();
-}

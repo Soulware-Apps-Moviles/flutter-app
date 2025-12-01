@@ -28,7 +28,6 @@ class ShoppingBagBloc extends Bloc<ShoppingBagEvent, ShoppingBagState> {
     on<DecrementItemQuantity>(_onDecrementItem);
     on<RemoveItemFromBag>(_onRemoveItem);
     on<ClearShoppingBag>(_onClearBag);
-    on<ProceedToStoreSelection>(_onProceedToStoreSelection);
 
     _setupProfileListener();
     _setupBagListener();
@@ -159,16 +158,6 @@ class ShoppingBagBloc extends Bloc<ShoppingBagEvent, ShoppingBagState> {
         status: ShoppingBagStatus.error,
         errorMessage: "Error clearing shopping bag: $e",
       ));
-    }
-  }
-
-  FutureOr<void> _onProceedToStoreSelection(
-    ProceedToStoreSelection event,
-    Emitter<ShoppingBagState> emit,
-  ) async {
-    if (state.bag.totalItems == 0) {
-      emit(state.copyWith(errorMessage: "Shopping bag is empty"));
-      return;
     }
   }
 }
