@@ -13,6 +13,8 @@ class ShoppingList {
     required this.items,
   });
 
+  int get totalUnits => items.fold(0, (sum, item) => sum + item.quantity);
+
   factory ShoppingList.fromJson(Map<String, dynamic> json) => ShoppingList(
         id: json['id'],
         customerId: json['customerId'],
