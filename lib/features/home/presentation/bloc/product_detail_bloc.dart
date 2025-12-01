@@ -2,14 +2,17 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tcompro_customer/features/home/presentation/bloc/product_detail_event.dart';
 import 'package:tcompro_customer/features/home/presentation/bloc/product_detail_state.dart';
-import 'package:tcompro_customer/shared/data/remote/shopping_list_service.dart';
 import 'package:tcompro_customer/shared/domain/product_repository.dart';
+import 'package:tcompro_customer/shared/domain/shopping_list_repository.dart';
 
 class ProductDetailBloc extends Bloc<ProductDetailEvent, ProductDetailState> {
-  final ProductRepository repository;
-  final ShoppingListService service;
+  final ProductRepository productRepository;
+  final ShoppingListRepository shoppingListRepository;
 
-  ProductDetailBloc({required this.repository, required this.service}) : super(const ProductDetailState()) {
+  ProductDetailBloc({
+    required this.productRepository,
+    required this.shoppingListRepository,
+  }) : super(const ProductDetailState()) {
     on<LoadProductDetail>(_onLoadProductDetail);
     on<ToggleFavorite>(_onToggleFavorite);
     on<AddToShoppingList>(_addToShoppingList);
@@ -26,7 +29,7 @@ class ProductDetailBloc extends Bloc<ProductDetailEvent, ProductDetailState> {
     ));
 
     try {
-      final relatedProducts = await repository.fetchProducts(
+      final relatedProducts = await productRepository.fetchProducts(
         customerId: event.customerId,
         category: event.product.category,
       );
@@ -62,7 +65,7 @@ class ProductDetailBloc extends Bloc<ProductDetailEvent, ProductDetailState> {
     emit(state.copyWith(product: updatedProduct));
 
     try {
-      repository.toggleFavorite(
+      productRepository.toggleFavorite(
         customerId: customerId,
         product: currentProduct,
       );
@@ -78,10 +81,10 @@ class ProductDetailBloc extends Bloc<ProductDetailEvent, ProductDetailState> {
     AddToShoppingList event,
     Emitter<ProductDetailState> emit,
   ) async {
-    const int targetQuantity = 1; 
+    const int targetQuantity = 1;
 
     try {
-      await service.addItemOrUpdateQuantity(
+      await shoppingListRepository.addItemOrUpdateQuantity(
         list: event.list,
         product: event.product,
         newQuantity: targetQuantity,

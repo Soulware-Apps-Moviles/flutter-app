@@ -9,11 +9,11 @@ import 'package:tcompro_customer/features/home/presentation/bloc/product_detail_
 import 'package:tcompro_customer/features/home/presentation/widgets/add_to_bag_bar.dart';
 import 'package:tcompro_customer/features/home/presentation/widgets/add_to_shopping_list.dart';
 import 'package:tcompro_customer/features/home/presentation/widgets/product_card.dart';
-import 'package:tcompro_customer/shared/data/remote/shopping_list_service.dart';
 import 'package:tcompro_customer/shared/domain/shopping_list.dart';
 import 'package:tcompro_customer/features/shopping-lists/presentation/bloc/shopping_lists_bloc.dart';
 import 'package:tcompro_customer/shared/domain/product.dart';
 import 'package:tcompro_customer/shared/domain/product_repository.dart';
+import 'package:tcompro_customer/shared/domain/shopping_list_repository.dart';
 
 class ProductDetailPage extends StatelessWidget {
   const ProductDetailPage({super.key});
@@ -22,8 +22,8 @@ class ProductDetailPage extends StatelessWidget {
     return MaterialPageRoute(
       builder: (context) => BlocProvider(
         create: (context) => ProductDetailBloc(
-          repository: context.read<ProductRepository>(),
-          service: context.read<ShoppingListService>()
+          productRepository: context.read<ProductRepository>(),
+          shoppingListRepository: context.read<ShoppingListRepository>()
         )..add(LoadProductDetail(product: product, customerId: customerId)),
         child: const ProductDetailPage(),
       ),

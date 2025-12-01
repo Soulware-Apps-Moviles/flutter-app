@@ -1,3 +1,5 @@
+import 'package:tcompro_customer/shared/domain/shopping_list.dart';
+
 abstract class ShoppingListsEvent {}
 
 class LoadShoppingListsEvent extends ShoppingListsEvent {
@@ -13,4 +15,9 @@ class SearchShoppingListsEvent extends ShoppingListsEvent {
 class CreateShoppingListEvent extends ShoppingListsEvent {
   final String name;
   CreateShoppingListEvent({required this.name});
+}
+
+class ShoppingListUpdatedFromStream extends ShoppingListsEvent {
+  final ShoppingList list;
+  ShoppingListUpdatedFromStream({required this.list});
 }

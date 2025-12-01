@@ -30,7 +30,9 @@ import 'package:tcompro_customer/shared/data/remote/shopping_list_service.dart';
 import 'package:tcompro_customer/features/shopping-lists/presentation/bloc/shopping_lists_bloc.dart';
 import 'package:tcompro_customer/features/auth/data/auth_service.dart';
 import 'package:tcompro_customer/shared/data/remote/profile_service.dart';
+import 'package:tcompro_customer/shared/data/shopping_list_repository_impl.dart';
 import 'package:tcompro_customer/shared/domain/product_repository.dart';
+import 'package:tcompro_customer/shared/domain/shopping_list_repository.dart';
 
 Future<void> main() async {
   await dotenv.load(fileName: ".env");
@@ -80,12 +82,16 @@ class MainApp extends StatelessWidget {
       shoppingBagDao: shoppingBagDao
     );
 
+    final shoppingListRepository = ShoppingListRepositoryImpl(
+      service: shoppingListService
+    );
+
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<AuthRepository>(create: (_) => authRepository),
         RepositoryProvider<ProfileService>(create: (_) => profileService),
         RepositoryProvider<ProductRepository>(create: (_) => productRepository),
-        RepositoryProvider<ShoppingListService>(create: (_) => shoppingListService),
+        RepositoryProvider<ShoppingListRepository>(create: (_) => shoppingListRepository),
         RepositoryProvider<Dio>(create: (_) => dio),
       ],
       child: MultiBlocProvider(
@@ -116,7 +122,7 @@ class MainApp extends StatelessWidget {
             create: (context) => FavoritesBloc(service: favoriteService)
           ),
           BlocProvider(
-            create: (context) => ShoppingListsBloc(service: context.read<ShoppingListService>())
+            create: (context) => ShoppingListsBloc(repository: context.read<ShoppingListRepository>())
           ),
           BlocProvider(
             create: (context) => ShoppingBagBloc(

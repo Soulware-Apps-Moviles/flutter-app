@@ -1,9 +1,13 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:tcompro_customer/core/constants/api_constants.dart';
 import 'package:tcompro_customer/shared/domain/product.dart';
 import 'package:tcompro_customer/shared/domain/shopping_list.dart';
 
+// Man was this a headache to deal with ...
+// Ill never allow any backend implementation without streamlining
+// the front-end application user flows first
+// Maybe its time for an "User-Flow Driven Development"
 class ShoppingListService {
   final Dio _dio;
 
@@ -21,14 +25,13 @@ class ShoppingListService {
 
       final List data = response.data;
       return data.map((e) => ShoppingList.fromJson(e)).toList();
-
     } catch (e, st) {
       debugPrint('Error fetchShoppingLists: $e\n$st');
       throw Exception('Failed to load shopping lists: $e');
     }
   }
 
-  Future<ShoppingList> addShoppingList(int customerId, String name) async {
+  Future<ShoppingList> createShoppingList(int customerId, String name) async {
     try {
       final response = await _dio.post(
         ApiConstants.shoppingListsEndpoint,
@@ -40,9 +43,8 @@ class ShoppingListService {
       );
 
       return ShoppingList.fromJson(response.data);
-
     } catch (e, st) {
-      debugPrint('Error addShoppingList: $e\n$st');
+      debugPrint('Error createShoppingList: $e\n$st');
       throw Exception('Failed to add shopping list: $e');
     }
   }
