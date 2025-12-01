@@ -1,4 +1,4 @@
-import 'package:tcompro_customer/features/shopping-lists/domain/shopping_list_item.dart';
+import 'package:tcompro_customer/shared/domain/shopping_list_item.dart';
 
 class ShoppingList {
   final int id;

@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 
 class AddToShoppingListButton extends StatelessWidget {
-  const AddToShoppingListButton({super.key});
+  final VoidCallback onAddToList; 
+
+  const AddToShoppingListButton({
+    super.key, 
+    required this.onAddToList,
+  });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.5,
       child: OutlinedButton(
-        onPressed: () {}, // Add logic here
+        onPressed: onAddToList,
         style: OutlinedButton.styleFrom(
           side: const BorderSide(color: Color(0xFFDD6529), width: 1.5),
           shape: RoundedRectangleBorder(

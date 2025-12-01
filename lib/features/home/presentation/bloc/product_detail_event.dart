@@ -1,3 +1,4 @@
+import 'package:tcompro_customer/shared/domain/shopping_list.dart';
 import 'package:tcompro_customer/shared/domain/product.dart';
 
 abstract class ProductDetailEvent {}
@@ -8,7 +9,13 @@ class LoadProductDetail extends ProductDetailEvent {
   LoadProductDetail({required this.product, required this.customerId});
 }
 
-class ToggleDetailFavorite extends ProductDetailEvent {
+class ToggleFavorite extends ProductDetailEvent {
   final Product product;
-  ToggleDetailFavorite({required this.product});
+  ToggleFavorite({required this.product});
+}
+
+class AddToShoppingList extends ProductDetailEvent {
+  final Product product;
+  final ShoppingList list;
+  AddToShoppingList({required this.product, required this.list});
 }

@@ -26,7 +26,7 @@ import 'package:tcompro_customer/shared/data/product_repository_impl.dart';
 import 'package:tcompro_customer/shared/data/remote/product_service.dart';
 import 'package:tcompro_customer/features/home/presentation/bloc/home_bloc.dart';
 import 'package:tcompro_customer/features/main/main_page.dart';
-import 'package:tcompro_customer/features/shopping-lists/data/shopping_list_service.dart';
+import 'package:tcompro_customer/shared/data/remote/shopping_list_service.dart';
 import 'package:tcompro_customer/features/shopping-lists/presentation/bloc/shopping_lists_bloc.dart';
 import 'package:tcompro_customer/features/auth/data/auth_service.dart';
 import 'package:tcompro_customer/shared/data/remote/profile_service.dart';
@@ -85,6 +85,7 @@ class MainApp extends StatelessWidget {
         RepositoryProvider<AuthRepository>(create: (_) => authRepository),
         RepositoryProvider<ProfileService>(create: (_) => profileService),
         RepositoryProvider<ProductRepository>(create: (_) => productRepository),
+        RepositoryProvider<ShoppingListService>(create: (_) => shoppingListService),
         RepositoryProvider<Dio>(create: (_) => dio),
       ],
       child: MultiBlocProvider(
@@ -99,8 +100,8 @@ class MainApp extends StatelessWidget {
             ),
           ),
           BlocProvider(create: (context) => ShoppingBagCubit(
-            productRepository: productRepository
-            ),
+              productRepository: productRepository
+              ),
           ),
           BlocProvider(
             create: (context) => LoginBloc(authRepository: authRepository),
@@ -115,14 +116,14 @@ class MainApp extends StatelessWidget {
             create: (context) => FavoritesBloc(service: favoriteService)
           ),
           BlocProvider(
-            create: (context) => ShoppingListsBloc(service: shoppingListService)
+            create: (context) => ShoppingListsBloc(service: context.read<ShoppingListService>())
           ),
           BlocProvider(
             create: (context) => ShoppingBagBloc(
               productRepository: productRepository, 
               profileCubit: context.read<ProfileCubit>()
             )
-          )
+          ),
         ],
         child: MaterialApp(
           title: "T'Compro Clientes",

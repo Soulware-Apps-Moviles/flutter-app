@@ -1,4 +1,4 @@
-import 'package:tcompro_customer/features/shopping-lists/domain/shopping_list.dart';
+import 'package:tcompro_customer/shared/domain/shopping_list.dart';
 
 class ShoppingListsState {
   final bool loading;

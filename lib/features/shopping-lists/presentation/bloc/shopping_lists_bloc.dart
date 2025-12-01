@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tcompro_customer/features/shopping-lists/data/shopping_list_service.dart';
-import 'package:tcompro_customer/features/shopping-lists/domain/shopping_list.dart';
+import 'package:tcompro_customer/shared/data/remote/shopping_list_service.dart';
+import 'package:tcompro_customer/shared/domain/shopping_list.dart';
 import 'package:tcompro_customer/features/shopping-lists/presentation/bloc/shopping_lists_event.dart';
 import 'package:tcompro_customer/features/shopping-lists/presentation/bloc/shopping_lists_state.dart';
 

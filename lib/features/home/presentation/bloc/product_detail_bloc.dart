@@ -2,14 +2,17 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tcompro_customer/features/home/presentation/bloc/product_detail_event.dart';
 import 'package:tcompro_customer/features/home/presentation/bloc/product_detail_state.dart';
+import 'package:tcompro_customer/shared/data/remote/shopping_list_service.dart';
 import 'package:tcompro_customer/shared/domain/product_repository.dart';
 
 class ProductDetailBloc extends Bloc<ProductDetailEvent, ProductDetailState> {
   final ProductRepository repository;
+  final ShoppingListService service;
 
-  ProductDetailBloc({required this.repository}) : super(const ProductDetailState()) {
+  ProductDetailBloc({required this.repository, required this.service}) : super(const ProductDetailState()) {
     on<LoadProductDetail>(_onLoadProductDetail);
-    on<ToggleDetailFavorite>(_onToggleFavorite);
+    on<ToggleFavorite>(_onToggleFavorite);
+    on<AddToShoppingList>(_addToShoppingList);
   }
 
   FutureOr<void> _onLoadProductDetail(
@@ -45,7 +48,7 @@ class ProductDetailBloc extends Bloc<ProductDetailEvent, ProductDetailState> {
   }
 
   FutureOr<void> _onToggleFavorite(
-    ToggleDetailFavorite event,
+    ToggleFavorite event,
     Emitter<ProductDetailState> emit,
   ) async {
     final customerId = state.customerId;
@@ -67,6 +70,25 @@ class ProductDetailBloc extends Bloc<ProductDetailEvent, ProductDetailState> {
       emit(state.copyWith(
         product: currentProduct,
         errorMessage: "Error toggling favorite: ${e.toString()}",
+      ));
+    }
+  }
+
+  FutureOr<void> _addToShoppingList(
+    AddToShoppingList event,
+    Emitter<ProductDetailState> emit,
+  ) async {
+    const int targetQuantity = 1; 
+
+    try {
+      await service.addItemOrUpdateQuantity(
+        list: event.list,
+        product: event.product,
+        newQuantity: targetQuantity,
+      );
+    } catch (e) {
+      emit(state.copyWith(
+        errorMessage: "Failed to add to list: ${e.toString()}",
       ));
     }
   }

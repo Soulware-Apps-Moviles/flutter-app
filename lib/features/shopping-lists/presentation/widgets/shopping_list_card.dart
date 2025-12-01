@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tcompro_customer/features/home/presentation/widgets/add_to_bag_button.dart';
-import 'package:tcompro_customer/features/shopping-lists/domain/shopping_list.dart';
+import 'package:tcompro_customer/shared/domain/shopping_list.dart';
 
 class ShoppingListCard extends StatelessWidget {
   final ShoppingList list;

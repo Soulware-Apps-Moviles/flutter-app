@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tcompro_customer/features/shopping-lists/domain/shopping_list.dart';
+import 'package:tcompro_customer/shared/domain/shopping_list.dart';
 import 'package:tcompro_customer/features/shopping-lists/presentation/widgets/delete_shopping_list_button.dart';
 import 'package:tcompro_customer/features/shopping-lists/presentation/widgets/shopping_list_item_card.dart';
 
