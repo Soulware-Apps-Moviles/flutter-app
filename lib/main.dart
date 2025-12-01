@@ -105,30 +105,40 @@ class MainApp extends StatelessWidget {
               profileService,
             ),
           ),
-          BlocProvider(create: (context) => ShoppingBagCubit(
-              productRepository: productRepository
-              ),
+          BlocProvider(
+            create: (context) => ShoppingBagCubit(
+              productRepository: context.read<ProductRepository>(),
+            ),
           ),
           BlocProvider(
-            create: (context) => LoginBloc(authRepository: authRepository),
+            create: (context) => LoginBloc(
+              authRepository: context.read<AuthRepository>(),
+            ),
           ),
           BlocProvider(
-            create: (context) => RegisterBloc(authRepository: authRepository),
+            create: (context) => RegisterBloc(
+              authRepository: context.read<AuthRepository>(),
+            ),
           ),
           BlocProvider(
-            create: (context) => HomeBloc(repository: productRepository)
+            create: (context) => HomeBloc(
+              repository: context.read<ProductRepository>(),
+            ),
           ),
           BlocProvider(
-            create: (context) => FavoritesBloc(service: favoriteService)
+            create: (context) => FavoritesBloc(service: favoriteService),
           ),
           BlocProvider(
-            create: (context) => ShoppingListsBloc(repository: context.read<ShoppingListRepository>())
+            create: (context) => ShoppingListsBloc(
+              shoppingListRepository: context.read<ShoppingListRepository>(),
+              productRepository: context.read<ProductRepository>(),
+            ),
           ),
           BlocProvider(
             create: (context) => ShoppingBagBloc(
-              productRepository: productRepository, 
+              productRepository: context.read<ProductRepository>(), 
               profileCubit: context.read<ProfileCubit>()
-            )
+            ),
           ),
         ],
         child: MaterialApp(

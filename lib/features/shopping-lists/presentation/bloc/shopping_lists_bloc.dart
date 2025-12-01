@@ -1,22 +1,28 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tcompro_customer/shared/domain/product_repository.dart';
 import 'package:tcompro_customer/shared/domain/shopping_list.dart';
 import 'package:tcompro_customer/shared/domain/shopping_list_repository.dart';
 import 'package:tcompro_customer/features/shopping-lists/presentation/bloc/shopping_lists_event.dart';
 import 'package:tcompro_customer/features/shopping-lists/presentation/bloc/shopping_lists_state.dart';
 
 class ShoppingListsBloc extends Bloc<ShoppingListsEvent, ShoppingListsState> {
-  final ShoppingListRepository repository;
+  final ShoppingListRepository shoppingListRepository;
+  final ProductRepository productRepository;
   late final StreamSubscription<ShoppingList> _listSubscription;
 
-  ShoppingListsBloc({required this.repository}) : super(ShoppingListsState.initial()) {
+  ShoppingListsBloc({
+    required this.shoppingListRepository,
+    required this.productRepository,
+  }) : super(ShoppingListsState.initial()) {
     on<LoadShoppingListsEvent>(_onLoadShoppingLists);
     on<CreateShoppingListEvent>(_onCreateShoppingList);
     on<SearchShoppingListsEvent>(_searchShoppingLists);
     on<ShoppingListUpdatedFromStream>(_onShoppingListUpdatedFromStream);
+    on<AddListToBagEvent>(_onAddListToBag);
 
-    _listSubscription = repository.listUpdates.listen((updatedList) {
+    _listSubscription = shoppingListRepository.listUpdates.listen((updatedList) {
       add(ShoppingListUpdatedFromStream(list: updatedList));
     });
   }
@@ -44,14 +50,14 @@ class ShoppingListsBloc extends Bloc<ShoppingListsEvent, ShoppingListsState> {
   }
 
   FutureOr<void> _onLoadShoppingLists(
-    LoadShoppingListsEvent event, 
+    LoadShoppingListsEvent event,
     Emitter<ShoppingListsState> emit,
   ) async {
     try {
       emit(state.copyWith(loading: true, customerId: event.customerId));
-      
-      final lists = await repository.fetchShoppingLists(customerId: event.customerId);
-      
+
+      final lists = await shoppingListRepository.fetchShoppingLists(customerId: event.customerId);
+
       emit(state.copyWith(shoppingLists: lists, loading: false));
     } catch (e) {
       emit(state.copyWith(loading: false, error: e.toString()));
@@ -59,7 +65,7 @@ class ShoppingListsBloc extends Bloc<ShoppingListsEvent, ShoppingListsState> {
   }
 
   FutureOr<void> _searchShoppingLists(
-    SearchShoppingListsEvent event, 
+    SearchShoppingListsEvent event,
     Emitter<ShoppingListsState> emit,
   ) async {
     final customerId = state.customerId;
@@ -67,7 +73,7 @@ class ShoppingListsBloc extends Bloc<ShoppingListsEvent, ShoppingListsState> {
 
     try {
       emit(state.copyWith(loading: true));
-      final lists = await repository.fetchShoppingLists(
+      final lists = await shoppingListRepository.fetchShoppingLists(
         customerId: customerId,
         name: event.name.isEmpty ? null : event.name,
       );
@@ -78,7 +84,7 @@ class ShoppingListsBloc extends Bloc<ShoppingListsEvent, ShoppingListsState> {
   }
 
   FutureOr<void> _onCreateShoppingList(
-    CreateShoppingListEvent event, 
+    CreateShoppingListEvent event,
     Emitter<ShoppingListsState> emit,
   ) async {
     final customerId = state.customerId;
@@ -86,10 +92,33 @@ class ShoppingListsBloc extends Bloc<ShoppingListsEvent, ShoppingListsState> {
 
     try {
       emit(state.copyWith(loading: true));
-      await repository.createShoppingList(
+      await shoppingListRepository.createShoppingList(
         customerId: customerId,
         name: event.name,
       );
+      emit(state.copyWith(loading: false));
+    } catch (e) {
+      emit(state.copyWith(loading: false, error: e.toString()));
+    }
+  }
+
+  FutureOr<void> _onAddListToBag(
+    AddListToBagEvent event,
+    Emitter<ShoppingListsState> emit,
+  ) async {
+    final customerId = state.customerId;
+    if (customerId == null) return;
+
+    try {
+      emit(state.copyWith(loading: true));
+
+      await Future.wait(event.list.items.map((item) {
+        return productRepository.addToShoppingBag(
+          customerId: customerId,
+          product: item.toProduct,
+        );
+      }));
+
       emit(state.copyWith(loading: false));
     } catch (e) {
       emit(state.copyWith(loading: false, error: e.toString()));

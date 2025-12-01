@@ -21,3 +21,8 @@ class ShoppingListUpdatedFromStream extends ShoppingListsEvent {
   final ShoppingList list;
   ShoppingListUpdatedFromStream({required this.list});
 }
+
+class AddListToBagEvent extends ShoppingListsEvent {
+  final ShoppingList list;
+  AddListToBagEvent({required this.list});
+}

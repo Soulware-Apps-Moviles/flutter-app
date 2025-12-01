@@ -74,6 +74,7 @@ class ShoppingListsPage extends StatelessWidget {
                           child: ShoppingListCard(
                             list: list,
                             onAddAllToBag: () {
+                              bloc.add(AddListToBagEvent(list: list));
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text(

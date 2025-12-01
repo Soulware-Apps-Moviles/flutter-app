@@ -1,3 +1,6 @@
+import 'package:tcompro_customer/features/home/domain/category.dart';
+import 'package:tcompro_customer/shared/domain/product.dart';
+
 class ShoppingItem {
   final int id;
   final int catalogProductId;
@@ -16,6 +19,17 @@ class ShoppingItem {
     required this.quantity,
     required this.imageUrl,
   });
+
+  // Henry you terrorist, whats the point of not creating two
+  // classes that differ only by a single field?
+  Product get toProduct => Product(
+    id: catalogProductId,
+    name: name,
+    description: description,
+    category: CategoryType.ALL,
+    price: price,
+    imageUrl: imageUrl,
+  );
 
   factory ShoppingItem.fromJson(Map<String, dynamic> json) => ShoppingItem(
         id: json['id'],
