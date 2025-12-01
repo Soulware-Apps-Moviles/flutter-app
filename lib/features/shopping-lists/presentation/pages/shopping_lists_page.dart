@@ -5,7 +5,6 @@ import 'package:tcompro_customer/features/shopping-lists/presentation/bloc/shopp
 import 'package:tcompro_customer/features/shopping-lists/presentation/bloc/shopping_lists_event.dart';
 import 'package:tcompro_customer/features/shopping-lists/presentation/bloc/shopping_lists_state.dart';
 import 'package:tcompro_customer/features/shopping-lists/presentation/pages/shopping_list_detail_page.dart';
-import 'package:tcompro_customer/features/shopping-lists/presentation/widgets/add_shopping_list_form.dart';
 import 'package:tcompro_customer/features/shopping-lists/presentation/widgets/add_shopping_list_modal.dart';
 import 'package:tcompro_customer/features/shopping-lists/presentation/widgets/shopping_list_card.dart';
 
