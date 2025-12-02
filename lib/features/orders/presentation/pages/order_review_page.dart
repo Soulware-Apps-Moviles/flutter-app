@@ -24,13 +24,16 @@ class OrderReviewPage extends StatelessWidget {
         ..add(
           LoadOrderReviewEvent(shop: shop, shoppingBag: shoppingBag),
         ),
-      child: const _OrderReviewView(),
+      // Pasamos la tienda directamente a la vista para inicializar el estado local
+      child: _OrderReviewView(shop: shop),
     );
   }
 }
 
 class _OrderReviewView extends StatefulWidget {
-  const _OrderReviewView();
+  final Shop shop;
+
+  const _OrderReviewView({required this.shop});
 
   @override
   State<_OrderReviewView> createState() => _OrderReviewViewState();
@@ -43,11 +46,10 @@ class _OrderReviewViewState extends State<_OrderReviewView> {
   @override
   void initState() {
     super.initState();
-    final state = context.read<OrderReviewBloc>().state;
-    if (state.shop != null) {
-      _selectedPickupMethod = state.shop!.pickupMethods.first;
-      _selectedPaymentMethod = state.shop!.paymentMethods.first;
-    }
+    // Inicializamos usando widget.shop que viene garantizado desde la navegación
+    // Esto evita el error de LateInitializationError si el Bloc aún está cargando
+    _selectedPickupMethod = widget.shop.pickupMethods.first;
+    _selectedPaymentMethod = widget.shop.paymentMethods.first;
   }
 
   // Método auxiliar para mapear ShoppingBag a OrderLines temporalmente
