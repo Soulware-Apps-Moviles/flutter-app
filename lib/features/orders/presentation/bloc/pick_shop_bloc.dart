@@ -19,18 +19,18 @@ class PickShopBloc extends Bloc<PickShopEvent, PickShopState> {
     LoadShopEvent event,
     Emitter<PickShopState> emit,
   ) async {
-    emit(state.copyWith(status: PickStoreStatus.loading));
+    emit(state.copyWith(status: PickShopStatus.loading));
 
     try {
       final shops = await _orderRepository.findNearbyShops(event.shoppingBag);
 
       emit(state.copyWith(
-        status: PickStoreStatus.loaded,
+        status: PickShopStatus.loaded,
         stores: shops,
       ));
     } catch (e) {
       emit(state.copyWith(
-        status: PickStoreStatus.error,
+        status: PickShopStatus.error,
         errorMessage: "Failed to load stores: $e",
       ));
     }
