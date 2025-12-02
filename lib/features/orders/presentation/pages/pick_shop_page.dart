@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tcompro_customer/features/orders/domain/order_repository.dart';
-import 'package:tcompro_customer/features/orders/presentation/bloc/pick_store_bloc.dart';
-import 'package:tcompro_customer/features/orders/presentation/bloc/pick_store_event.dart';
-import 'package:tcompro_customer/features/orders/presentation/bloc/pick_store_state.dart';
-import 'package:tcompro_customer/features/orders/presentation/widgets/ShopCard.dart';
+import 'package:tcompro_customer/features/orders/presentation/bloc/pick_shop_bloc.dart';
+import 'package:tcompro_customer/features/orders/presentation/bloc/pick_shop_event.dart';
+import 'package:tcompro_customer/features/orders/presentation/bloc/pick_shop_state.dart';
+import 'package:tcompro_customer/features/orders/presentation/widgets/shop_card.dart';
 import 'package:tcompro_customer/features/orders/presentation/widgets/bottom_shop_selection_bar.dart';
 import 'package:tcompro_customer/shared/domain/shopping_bag.dart';
 
-class PickStorePage extends StatelessWidget {
+class PickShopPage extends StatelessWidget {
   final ShoppingBag shoppingBag;
 
-  const PickStorePage({
+  const PickShopPage({
     super.key,
     required this.shoppingBag,
   });
@@ -19,9 +19,9 @@ class PickStorePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => PickStoreBloc(
+      create: (context) => PickShopBloc(
         orderRepository: context.read<OrderRepository>(),
-      )..add(LoadStoresEvent(shoppingBag)),
+      )..add(LoadShopEvent(shoppingBag)),
       child: const _PickStoreView(),
     );
   }
@@ -39,7 +39,7 @@ class _PickStoreView extends StatelessWidget {
         surfaceTintColor: Colors.white,
       ),
       backgroundColor: const Color(0xFFF5F5F5),
-      body: BlocBuilder<PickStoreBloc, PickStoreState>(
+      body: BlocBuilder<PickShopBloc, PickShopState>(
         builder: (context, state) {
           if (state.status == PickStoreStatus.loading) {
             return const Center(
@@ -51,7 +51,7 @@ class _PickStoreView extends StatelessWidget {
             return Center(child: Text(state.errorMessage ?? "Unknown error"));
           }
 
-          if (state.stores.isEmpty) {
+          if (state.shops.isEmpty) {
             return const Center(child: Text("No stores available nearby"));
           }
 
@@ -60,17 +60,17 @@ class _PickStoreView extends StatelessWidget {
               Expanded(
                 child: ListView.separated(
                   padding: const EdgeInsets.all(16),
-                  itemCount: state.stores.length,
+                  itemCount: state.shops.length,
                   separatorBuilder: (_, _) => const SizedBox(height: 12),
                   itemBuilder: (context, index) {
-                    final store = state.stores[index];
+                    final store = state.shops[index];
                     final isSelected = state.selectedStore?.id == store.id;
 
                     return ShopCard(
                       shop: store,
                       isSelected: isSelected,
                       onTap: () {
-                        context.read<PickStoreBloc>().add(SelectShopEvent(shop: store));
+                        context.read<PickShopBloc>().add(SelectShopEvent(shop: store));
                       },
                     );
                   },

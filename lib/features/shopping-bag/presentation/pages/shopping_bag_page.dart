@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tcompro_customer/core/data/cubits/shopping_bag_cubit.dart';
-import 'package:tcompro_customer/features/orders/presentation/pages/pick_store_page.dart';
+import 'package:tcompro_customer/features/orders/presentation/pages/pick_shop_page.dart';
 import 'package:tcompro_customer/features/shopping-bag/presentation/bloc/shopping_bag_bloc.dart';
 import 'package:tcompro_customer/features/shopping-bag/presentation/bloc/shopping_bag_event.dart';
 import 'package:tcompro_customer/features/shopping-bag/presentation/bloc/shopping_bag_state.dart';
@@ -134,7 +134,7 @@ class _TotalBar extends StatelessWidget {
 
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => PickStorePage(
+                    builder: (context) => PickShopPage(
                       shoppingBag: currentBag,
                     ),
                   ),

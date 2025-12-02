@@ -1,23 +1,23 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tcompro_customer/features/orders/domain/order_repository.dart';
-import 'package:tcompro_customer/features/orders/presentation/bloc/pick_store_event.dart';
-import 'package:tcompro_customer/features/orders/presentation/bloc/pick_store_state.dart';
+import 'package:tcompro_customer/features/orders/presentation/bloc/pick_shop_event.dart';
+import 'package:tcompro_customer/features/orders/presentation/bloc/pick_shop_state.dart';
 
-class PickStoreBloc extends Bloc<PickStoreEvent, PickStoreState> {
+class PickShopBloc extends Bloc<PickShopEvent, PickShopState> {
   final OrderRepository _orderRepository;
   
-  PickStoreBloc({
+  PickShopBloc({
     required OrderRepository orderRepository,
   }) : _orderRepository = orderRepository,
-       super(PickStoreState()) {
-    on<LoadStoresEvent>(_onLoadStores);
+       super(PickShopState()) {
+    on<LoadShopEvent>(_onLoadStores);
     on<SelectShopEvent>(_onSelectStore);
   }
 
   FutureOr<void> _onLoadStores(
-    LoadStoresEvent event,
-    Emitter<PickStoreState> emit,
+    LoadShopEvent event,
+    Emitter<PickShopState> emit,
   ) async {
     emit(state.copyWith(status: PickStoreStatus.loading));
 
@@ -38,7 +38,7 @@ class PickStoreBloc extends Bloc<PickStoreEvent, PickStoreState> {
 
   FutureOr<void> _onSelectStore(
     SelectShopEvent event,
-    Emitter<PickStoreState> emit,
+    Emitter<PickShopState> emit,
   ) {
     emit(state.copyWith(selectedStore: event.shop));
   }

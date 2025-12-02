@@ -2,28 +2,28 @@ import 'package:tcompro_customer/features/orders/domain/shop.dart';
 
 enum PickStoreStatus { initial, loading, loaded, error }
 
-class PickStoreState {
+class PickShopState {
   final PickStoreStatus status;
-  final List<Shop> stores;
+  final List<Shop> shops;
   final Shop? selectedStore;
   final String? errorMessage;
 
-  PickStoreState({
+  PickShopState({
     this.status = PickStoreStatus.initial,
-    this.stores = const [],
+    this.shops = const [],
     this.selectedStore,
     this.errorMessage,
   });
 
-  PickStoreState copyWith({
+  PickShopState copyWith({
     PickStoreStatus? status,
     List<Shop>? stores,
     Shop? selectedStore,
     String? errorMessage,
   }) {
-    return PickStoreState(
+    return PickShopState(
       status: status ?? this.status,
-      stores: stores ?? this.stores,
+      shops: stores ?? this.shops,
       selectedStore: selectedStore ?? this.selectedStore,
       errorMessage: errorMessage ?? this.errorMessage,
     );
