@@ -1,10 +1,15 @@
-import 'package:tcompro_customer/features/orders/domain/store.dart';
+import 'package:tcompro_customer/features/orders/domain/shop.dart';
+import 'package:tcompro_customer/shared/domain/shopping_bag.dart';
 
 abstract class PickStoreEvent {}
 
-class LoadStoresEvent extends PickStoreEvent {}
+class LoadStoresEvent extends PickStoreEvent {
+  final ShoppingBag shoppingBag;
 
-class SelectStoreEvent extends PickStoreEvent {
-  final Store store;
-  SelectStoreEvent({required this.store});
+  LoadStoresEvent(this.shoppingBag);
+}
+
+class SelectShopEvent extends PickStoreEvent {
+  final Shop shop;
+  SelectShopEvent({required this.shop});
 }

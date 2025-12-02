@@ -18,6 +18,11 @@ import 'package:tcompro_customer/features/auth/presentation/blocs/login_bloc.dar
 import 'package:tcompro_customer/features/auth/presentation/blocs/register_bloc.dart';
 import 'package:tcompro_customer/features/auth/presentation/pages/login_page.dart';
 import 'package:tcompro_customer/features/auth/presentation/pages/register_page.dart';
+import 'package:tcompro_customer/features/orders/data/location_service.dart';
+import 'package:tcompro_customer/features/orders/data/order_repository_impl.dart';
+import 'package:tcompro_customer/features/orders/data/order_service.dart';
+import 'package:tcompro_customer/features/orders/data/shop_service.dart';
+import 'package:tcompro_customer/features/orders/domain/order_repository.dart';
 import 'package:tcompro_customer/features/shopping-bag/presentation/bloc/shopping_bag_bloc.dart';
 import 'package:tcompro_customer/shared/data/local/shopping_bag_dao.dart';
 import 'package:tcompro_customer/shared/data/remote/favorite_service.dart';
@@ -67,6 +72,9 @@ class MainApp extends StatelessWidget {
     final productService = ProductService(dio: dio);
     final favoriteService = FavoriteService(dio: dio);
     final shoppingListService = ShoppingListService(dio: dio);
+    final orderService = OrderService(dio: dio);
+    final shopService = ShopService(dio: dio);
+    final locationService = LocationService();
 
     final ShoppingBagDao shoppingBagDao = ShoppingBagDao();
     
@@ -86,12 +94,19 @@ class MainApp extends StatelessWidget {
       service: shoppingListService
     );
 
+    final orderRepository = OrderRepositoryImpl(
+      orderService: orderService,
+      shopService: shopService,
+      locationService: locationService
+    );
+
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<AuthRepository>(create: (_) => authRepository),
         RepositoryProvider<ProfileService>(create: (_) => profileService),
         RepositoryProvider<ProductRepository>(create: (_) => productRepository),
         RepositoryProvider<ShoppingListRepository>(create: (_) => shoppingListRepository),
+        RepositoryProvider<OrderRepository>(create: (_) => orderRepository),
         RepositoryProvider<Dio>(create: (_) => dio),
       ],
       child: MultiBlocProvider(

@@ -1,11 +1,11 @@
-import 'package:tcompro_customer/features/orders/domain/store.dart';
+import 'package:tcompro_customer/features/orders/domain/shop.dart';
 
 enum PickStoreStatus { initial, loading, loaded, error }
 
 class PickStoreState {
   final PickStoreStatus status;
-  final List<Store> stores;
-  final Store? selectedStore;
+  final List<Shop> stores;
+  final Shop? selectedStore;
   final String? errorMessage;
 
   PickStoreState({
@@ -17,8 +17,8 @@ class PickStoreState {
 
   PickStoreState copyWith({
     PickStoreStatus? status,
-    List<Store>? stores,
-    Store? selectedStore,
+    List<Shop>? stores,
+    Shop? selectedStore,
     String? errorMessage,
   }) {
     return PickStoreState(

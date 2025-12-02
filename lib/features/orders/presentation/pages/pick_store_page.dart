@@ -1,17 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tcompro_customer/features/orders/domain/store.dart';
+import 'package:tcompro_customer/features/orders/domain/order_repository.dart';
+import 'package:tcompro_customer/features/orders/domain/shop.dart';
 import 'package:tcompro_customer/features/orders/presentation/bloc/pick_store_bloc.dart';
 import 'package:tcompro_customer/features/orders/presentation/bloc/pick_store_event.dart';
 import 'package:tcompro_customer/features/orders/presentation/bloc/pick_store_state.dart';
+import 'package:tcompro_customer/shared/domain/shopping_bag.dart';
 
 class PickStorePage extends StatelessWidget {
-  const PickStorePage({super.key});
+  final ShoppingBag shoppingBag;
+
+  const PickStorePage({
+    super.key,
+    required this.shoppingBag,
+  });
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => PickStoreBloc()..add(LoadStoresEvent()),
+      create: (context) => PickStoreBloc(
+        orderRepository: context.read<OrderRepository>(),
+      )..add(LoadStoresEvent(shoppingBag)),
       child: const _PickStoreView(),
     );
   }
@@ -42,7 +51,7 @@ class _PickStoreView extends StatelessWidget {
           }
 
           if (state.stores.isEmpty) {
-            return const Center(child: Text("No stores available"));
+            return const Center(child: Text("No stores available nearby"));
           }
 
           return Column(
@@ -56,11 +65,11 @@ class _PickStoreView extends StatelessWidget {
                     final store = state.stores[index];
                     final isSelected = state.selectedStore?.id == store.id;
 
-                    return _StoreCard(
-                      store: store,
+                    return _ShopCard(
+                      shop: store,
                       isSelected: isSelected,
                       onTap: () {
-                        context.read<PickStoreBloc>().add(SelectStoreEvent(store: store));
+                        context.read<PickStoreBloc>().add(SelectShopEvent(shop: store));
                       },
                     );
                   },
@@ -80,13 +89,13 @@ class _PickStoreView extends StatelessWidget {
   }
 }
 
-class _StoreCard extends StatelessWidget {
-  final Store store;
+class _ShopCard extends StatelessWidget {
+  final Shop shop;
   final bool isSelected;
   final VoidCallback onTap;
 
-  const _StoreCard({
-    required this.store,
+  const _ShopCard({
+    required this.shop,
     required this.isSelected,
     required this.onTap,
   });
@@ -131,7 +140,7 @@ class _StoreCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      store.name,
+                      shop.name,
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
@@ -139,11 +148,13 @@ class _StoreCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      store.address,
+                      "Pickup: ${shop.pickupMethods.join(', ')}",
                       style: TextStyle(
                         color: Colors.grey.shade600,
                         fontSize: 14,
                       ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),

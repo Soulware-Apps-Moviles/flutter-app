@@ -1,14 +1,18 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tcompro_customer/features/orders/domain/store.dart';
+import 'package:tcompro_customer/features/orders/domain/order_repository.dart';
 import 'package:tcompro_customer/features/orders/presentation/bloc/pick_store_event.dart';
 import 'package:tcompro_customer/features/orders/presentation/bloc/pick_store_state.dart';
 
 class PickStoreBloc extends Bloc<PickStoreEvent, PickStoreState> {
+  final OrderRepository _orderRepository;
   
-  PickStoreBloc() : super(PickStoreState()) {
+  PickStoreBloc({
+    required OrderRepository orderRepository,
+  }) : _orderRepository = orderRepository,
+       super(PickStoreState()) {
     on<LoadStoresEvent>(_onLoadStores);
-    on<SelectStoreEvent>(_onSelectStore);
+    on<SelectShopEvent>(_onSelectStore);
   }
 
   FutureOr<void> _onLoadStores(
@@ -16,46 +20,26 @@ class PickStoreBloc extends Bloc<PickStoreEvent, PickStoreState> {
     Emitter<PickStoreState> emit,
   ) async {
     emit(state.copyWith(status: PickStoreStatus.loading));
-    
-    // Mocking data fetch delay
-    await Future.delayed(const Duration(seconds: 1));
 
     try {
-      final mockStores = [
-        Store(
-          id: 1, 
-          name: "T'Compro Main Store", 
-          address: "Av. Larco 123, Miraflores",
-          latitude: -12.119,
-          longitude: -77.029,
-          imageUrl: "https://via.placeholder.com/150",
-        ),
-        Store(
-          id: 2, 
-          name: "T'Compro Express", 
-          address: "Jr. De la Unión 456, Lima",
-          latitude: -12.046,
-          longitude: -77.030,
-          imageUrl: "https://via.placeholder.com/150",
-        ),
-      ];
+      final shops = await _orderRepository.findNearbyShops(event.shoppingBag);
 
       emit(state.copyWith(
         status: PickStoreStatus.loaded,
-        stores: mockStores,
+        stores: shops,
       ));
     } catch (e) {
       emit(state.copyWith(
         status: PickStoreStatus.error,
-        errorMessage: "Failed to load stores",
+        errorMessage: "Failed to load stores: $e",
       ));
     }
   }
 
   FutureOr<void> _onSelectStore(
-    SelectStoreEvent event,
+    SelectShopEvent event,
     Emitter<PickStoreState> emit,
   ) {
-    emit(state.copyWith(selectedStore: event.store));
+    emit(state.copyWith(selectedStore: event.shop));
   }
 }

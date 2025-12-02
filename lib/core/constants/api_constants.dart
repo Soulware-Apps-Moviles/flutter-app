@@ -6,6 +6,7 @@ class ApiConstants {
   static final String favoritesEndpoint = dotenv.env['FAVORITES_ENDPOINT'] ?? '';
   static final String shoppingListsEndpoint = dotenv.env['SHOPPING_LISTS_ENDPOINT'] ?? '';
   static final String profilesEndpoint = dotenv.env['AUTH_ENDPOINT'] ?? '';
+  static final String ordersEndpoint = dotenv.env['ORDERS_ENDPOINT'] ?? '';
 
   static final String customerRole = "CUSTOMER";
 }
