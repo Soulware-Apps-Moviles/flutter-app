@@ -25,7 +25,11 @@ class ShopService {
 
       final List data = response.data;
 
-      return data.map((e) => Shop.fromJson(e)).toList();
+      return data.map((e) => Shop.fromJson(
+        e, 
+        userLat: latitude, 
+        userLng: longitude
+      )).toList();
 
     } catch (e, st) {
       debugPrint('Error fetchShopsByProducts: $e\n$st');

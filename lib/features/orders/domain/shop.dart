@@ -1,12 +1,15 @@
+import 'package:geolocator/geolocator.dart';
+
 class Shop {
   final int id;
   final int ownerId;
-  final List<String> paymentMethods;
-  final List<String> pickupMethods;
+  final List<PaymentMethod> paymentMethods;
+  final List<PickupMethod> pickupMethods;
   final double maxCreditPerCustomer;
   final double latitude;
   final double longitude;
   final String name;
+  final double? distanceInMeters; // Nuevo campo
 
   Shop({
     required this.id,
@@ -17,26 +20,45 @@ class Shop {
     required this.latitude,
     required this.longitude,
     required this.name,
+    this.distanceInMeters,
   });
 
-  factory Shop.fromJson(Map<String, dynamic> json) {
+  factory Shop.fromJson(Map<String, dynamic> json, {double? userLat, double? userLng}) {
+    double shopLat = json['latitude'].toDouble();
+    double shopLng = json['longitude'].toDouble();
+    double? calculatedDistance;
+
+    if (userLat != null && userLng != null) {
+      calculatedDistance = Geolocator.distanceBetween(
+        userLat,
+        userLng,
+        shopLat,
+        shopLng,
+      );
+    }
+
     return Shop(
       id: json['id'],
       ownerId: json['ownerId'],
-      paymentMethods: List<String>.from(json['paymentMethods']),
-      pickupMethods: List<String>.from(json['pickupMethods']),
+      paymentMethods: (json['paymentMethods'] as List)
+          .map((e) => PaymentMethod.fromString(e))
+          .toList(),
+      pickupMethods: (json['pickupMethods'] as List)
+          .map((e) => PickupMethod.fromString(e))
+          .toList(),
       maxCreditPerCustomer: json['maxCreditPerCustomer'].toDouble(),
-      latitude: json['latitude'].toDouble(),
-      longitude: json['longitude'].toDouble(),
+      latitude: shopLat,
+      longitude: shopLng,
       name: json['name'],
+      distanceInMeters: calculatedDistance,
     );
   }
 
   Shop copyWith({
     int? id,
     int? ownerId,
-    List<String>? paymentMethods,
-    List<String>? pickupMethods,
+    List<PaymentMethod>? paymentMethods,
+    List<PickupMethod>? pickupMethods,
     double? maxCreditPerCustomer,
     double? latitude,
     double? longitude,
@@ -52,5 +74,60 @@ class Shop {
       longitude: longitude ?? this.longitude,
       name: name ?? this.name,
     );
+  }
+}
+
+enum PaymentMethod {
+  cash,
+  onCredit,
+  virtual;
+
+  static PaymentMethod fromString(String value) {
+    switch (value) {
+      case 'CASH':
+        return PaymentMethod.cash;
+      case 'ON_CREDIT':
+        return PaymentMethod.onCredit;
+      case 'VIRTUAL':
+        return PaymentMethod.virtual;
+      default:
+        throw Exception('Unknown payment method: $value');
+    }
+  }
+
+  String get displayName {
+    switch (this) {
+      case PaymentMethod.cash:
+        return 'Cash';
+      case PaymentMethod.onCredit:
+        return 'Credit';
+      case PaymentMethod.virtual:
+        return 'Virtual';
+    }
+  }
+}
+
+enum PickupMethod {
+  delivery,
+  shopPickUp;
+
+  static PickupMethod fromString(String value) {
+    switch (value) {
+      case 'DELIVERY':
+        return PickupMethod.delivery;
+      case 'SHOP_PICK_UP':
+        return PickupMethod.shopPickUp;
+      default:
+        throw Exception('Unknown pickup method: $value');
+    }
+  }
+
+  String get displayName {
+    switch (this) {
+      case PickupMethod.delivery:
+        return 'Delivery';
+      case PickupMethod.shopPickUp:
+        return 'Shop Pickup';
+    }
   }
 }
