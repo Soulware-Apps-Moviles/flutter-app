@@ -139,7 +139,7 @@ class ShoppingListCard extends StatelessWidget {
                       child: Image.network(
                         item.imageUrl,
                         fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) => Container(
+                        errorBuilder: (_, _, _) => Container(
                           color: Colors.grey.shade100,
                           child: Icon(
                             Icons.image_not_supported,

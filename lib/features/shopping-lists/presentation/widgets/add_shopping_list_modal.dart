@@ -107,8 +107,8 @@ class _AddShoppingListModalState extends State<AddShoppingListModal> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFDD6529),
                     foregroundColor: Colors.white,
-                    disabledBackgroundColor: const Color(0xFFDD6529).withOpacity(0.5),
-                    disabledForegroundColor: Colors.white.withOpacity(0.8),
+                    disabledBackgroundColor: const Color(0xFFDD6529).withValues(alpha: 0.5),
+                    disabledForegroundColor: Colors.white.withValues(alpha: 0.8),
                     elevation: 0,
                     padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                     shape: RoundedRectangleBorder(

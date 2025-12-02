@@ -86,7 +86,7 @@ class ProductDetailPage extends StatelessWidget {
                       product.imageUrl,
                       height: MediaQuery.of(context).size.height * 0.35,
                       fit: BoxFit.contain,
-                      errorBuilder: (_, __, ___) =>
+                      errorBuilder: (_, _, _) =>
                           const Icon(Icons.image_not_supported, size: 100),
                     ),
                   ),
