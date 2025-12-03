@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 
 class AddToBagBar extends StatelessWidget {
   final double price;
+  final VoidCallback onTap;
 
   const AddToBagBar({
     super.key,
     required this.price,
+    required this.onTap,
   });
 
   @override
@@ -33,7 +35,7 @@ class AddToBagBar extends StatelessWidget {
             ),
           ),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: onTap,
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFFDD6529),
               padding:

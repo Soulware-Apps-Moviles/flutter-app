@@ -165,7 +165,18 @@ class ProductDetailPage extends StatelessWidget {
       ),
       bottomNavigationBar: BlocBuilder<ProductDetailBloc, ProductDetailState>(
         builder: (context, state) {
-          return AddToBagBar(price: state.product?.price ?? 0.00);
+          return AddToBagBar(
+            price: state.product?.price ?? 0.00,
+            onTap: () {
+              context.read<ShoppingBagCubit>().addProduct(state.product!);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text("${state.product!.name} added to shopping bag"),
+                  duration: const Duration(seconds: 1),
+                ),
+              );
+            },
+          );
         },
       ),
     );

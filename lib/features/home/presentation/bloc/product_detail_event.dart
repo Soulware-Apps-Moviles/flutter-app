@@ -19,3 +19,8 @@ class AddToShoppingList extends ProductDetailEvent {
   final ShoppingList list;
   AddToShoppingList({required this.product, required this.list});
 }
+
+class AddToShoppingBag extends ProductDetailEvent {
+  final Product product;
+  AddToShoppingBag({required this.product});
+}
