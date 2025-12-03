@@ -49,7 +49,7 @@ class MaterialTheme {
       surfaceDim: Color(0xffebd6cd),
       surfaceBright: Color(0xfffff8f6),
       surfaceContainerLowest: Color(0xffffffff),
-      surfaceContainerLow: Color(0xfffff1ec),
+      surfaceContainerLow: Color(0xffffffff),
       surfaceContainer: Color(0xffffe9e2),
       surfaceContainerHigh: Color(0xfffae4db),
       surfaceContainerHighest: Color(0xfff4ded6),

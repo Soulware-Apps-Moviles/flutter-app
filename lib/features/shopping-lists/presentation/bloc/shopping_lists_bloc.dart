@@ -21,6 +21,8 @@ class ShoppingListsBloc extends Bloc<ShoppingListsEvent, ShoppingListsState> {
     on<SearchShoppingListsEvent>(_searchShoppingLists);
     on<ShoppingListUpdatedFromStream>(_onShoppingListUpdatedFromStream);
     on<AddListToBagEvent>(_onAddListToBag);
+    on<UpdateItemQuantityEvent>(_onUpdateItemQuantity);
+    on<RemoveItemFromListEvent>(_onRemoveItemFromList);
 
     _listSubscription = shoppingListRepository.listUpdates.listen((updatedList) {
       add(ShoppingListUpdatedFromStream(list: updatedList));
@@ -122,6 +124,36 @@ class ShoppingListsBloc extends Bloc<ShoppingListsEvent, ShoppingListsState> {
       emit(state.copyWith(loading: false));
     } catch (e) {
       emit(state.copyWith(loading: false, error: e.toString()));
+    }
+  }
+
+  FutureOr<void> _onUpdateItemQuantity(
+    UpdateItemQuantityEvent event,
+    Emitter<ShoppingListsState> emit,
+  ) async {
+    try {
+      await shoppingListRepository.addItemOrUpdateQuantity(
+        list: event.list,
+        product: event.item.toProduct,
+        newQuantity: event.newQuantity,
+      );
+    } catch (e) {
+      emit(state.copyWith(error: e.toString()));
+    }
+  }
+
+  FutureOr<void> _onRemoveItemFromList(
+    RemoveItemFromListEvent event,
+    Emitter<ShoppingListsState> emit,
+  ) async {
+    try {
+      await shoppingListRepository.addItemOrUpdateQuantity(
+        list: event.list,
+        product: event.item.toProduct,
+        newQuantity: 0,
+      );
+    } catch (e) {
+      emit(state.copyWith(error: e.toString()));
     }
   }
 }

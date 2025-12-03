@@ -1,4 +1,5 @@
 import 'package:tcompro_customer/shared/domain/shopping_list.dart';
+import 'package:tcompro_customer/shared/domain/shopping_list_item.dart';
 
 abstract class ShoppingListsEvent {}
 
@@ -25,4 +26,26 @@ class ShoppingListUpdatedFromStream extends ShoppingListsEvent {
 class AddListToBagEvent extends ShoppingListsEvent {
   final ShoppingList list;
   AddListToBagEvent({required this.list});
+}
+
+class UpdateItemQuantityEvent extends ShoppingListsEvent {
+  final ShoppingList list;
+  final ShoppingItem item;
+  final int newQuantity;
+
+  UpdateItemQuantityEvent({
+    required this.list,
+    required this.item,
+    required this.newQuantity,
+  });
+}
+
+class RemoveItemFromListEvent extends ShoppingListsEvent {
+  final ShoppingList list;
+  final ShoppingItem item;
+
+  RemoveItemFromListEvent({
+    required this.list,
+    required this.item,
+  });
 }

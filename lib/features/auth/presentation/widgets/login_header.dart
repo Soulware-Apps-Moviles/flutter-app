@@ -8,7 +8,7 @@ class LoginHeader extends StatelessWidget {
     return Column(
       children: [
         Image.asset(
-          'assets/images/logo.png',
+          'assets/icon/app_icon.png',
           height: 100,
           errorBuilder: (_, _, _) => const Icon(Icons.pets, size: 80, color: Color(0xFFE56B26)),
         ),
