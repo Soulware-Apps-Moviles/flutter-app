@@ -1,7 +1,7 @@
 import 'package:tcompro_customer/features/home/domain/category.dart';
 import 'package:tcompro_customer/shared/domain/product.dart';
 
-class ShoppingItem {
+class ShoppingListItem {
   final int id;
   final int catalogProductId;
   final String name;
@@ -10,7 +10,7 @@ class ShoppingItem {
   final int quantity;
   final String imageUrl;
 
-  ShoppingItem({
+  ShoppingListItem({
     required this.id,
     required this.catalogProductId,
     required this.name,
@@ -31,7 +31,7 @@ class ShoppingItem {
     imageUrl: imageUrl,
   );
 
-  factory ShoppingItem.fromJson(Map<String, dynamic> json) => ShoppingItem(
+  factory ShoppingListItem.fromJson(Map<String, dynamic> json) => ShoppingListItem(
         id: json['id'],
         catalogProductId: json['catalogProductId'],
         name: json['name'],

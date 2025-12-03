@@ -4,7 +4,7 @@ class ShoppingList {
   final int id;
   final int customerId;
   final String name;
-  final List<ShoppingItem> items;
+  final List<ShoppingListItem> items;
 
   ShoppingList({
     required this.id,
@@ -20,7 +20,7 @@ class ShoppingList {
         customerId: json['customerId'],
         name: json['name'],
         items: (json['items'] as List)
-            .map((i) => ShoppingItem.fromJson(i))
+            .map((i) => ShoppingListItem.fromJson(i))
             .toList(),
       );
 }

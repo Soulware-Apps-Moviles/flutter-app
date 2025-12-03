@@ -15,13 +15,13 @@ class ShoppingListReceived extends ShoppingListDetailEvent {
 }
 
 class UpdateItemQuantity extends ShoppingListDetailEvent {
-  final ShoppingItem item;
+  final ShoppingListItem item;
   final int newQuantity;
   UpdateItemQuantity({required this.item, required this.newQuantity});
 }
 
 class AddItemToBag extends ShoppingListDetailEvent {
-  final ShoppingItem item;
+  final ShoppingListItem item;
   AddItemToBag({required this.item});
 }
 

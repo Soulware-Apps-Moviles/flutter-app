@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tcompro_customer/shared/domain/shopping_list_item.dart';
 
 class ShoppingListItemCard extends StatelessWidget {
-  final ShoppingItem item;
+  final ShoppingListItem item;
   final VoidCallback onAddToCart;
   final VoidCallback onRemove;
   final VoidCallback onIncrement;
