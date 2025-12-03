@@ -26,7 +26,6 @@ class ShoppingListItemCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Image and delete button
           Expanded(
             child: Stack(
               alignment: Alignment.topRight,
@@ -53,8 +52,6 @@ class ShoppingListItemCard extends StatelessWidget {
               ],
             ),
           ),
-
-          // Name
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             child: Text(
@@ -64,8 +61,6 @@ class ShoppingListItemCard extends StatelessWidget {
               style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
             ),
           ),
-
-          // Price
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Text(
@@ -73,10 +68,7 @@ class ShoppingListItemCard extends StatelessWidget {
               style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 13),
             ),
           ),
-
           const SizedBox(height: 8),
-
-          // Quantity Controls Row
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Row(
@@ -100,10 +92,7 @@ class ShoppingListItemCard extends StatelessWidget {
               ],
             ),
           ),
-
           const SizedBox(height: 8),
-
-          // Add to cart button
           Padding(
             padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
             child: SizedBox(
@@ -117,7 +106,7 @@ class ShoppingListItemCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   padding: const EdgeInsets.symmetric(vertical: 8),
-                  minimumSize: const Size(0, 36), // Altura compacta
+                  minimumSize: const Size(0, 36),
                 ),
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,

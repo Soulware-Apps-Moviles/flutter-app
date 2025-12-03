@@ -90,7 +90,6 @@ class ShoppingListDetailPage extends StatelessWidget {
                       return ShoppingListItemCard(
                         item: item,
                         
-                        // 1. Incrementar Cantidad en la Lista
                         onIncrement: () {
                           context.read<ShoppingListDetailBloc>().add(UpdateItemQuantity(
                             item: item,
@@ -98,7 +97,6 @@ class ShoppingListDetailPage extends StatelessWidget {
                           ));
                         },
 
-                        // 2. Disminuir Cantidad en la Lista
                         onDecrement: () {
                           if (item.quantity > 1) {
                             context.read<ShoppingListDetailBloc>().add(UpdateItemQuantity(
@@ -108,15 +106,12 @@ class ShoppingListDetailPage extends StatelessWidget {
                           }
                         },
 
-                        // 3. Eliminar Item de esta Lista (quantity = 0)
                         onRemove: () {
                           context.read<ShoppingListDetailBloc>().add(UpdateItemQuantity(
                             item: item,
                             newQuantity: 0
                           ));
                         },
-
-                        // 4. Agregar al Carrito Global (Shopping Bag)
                         onAddToCart: () {
                           context.read<ShoppingListDetailBloc>().add(
                             AddItemToBag(item: item)

@@ -235,9 +235,9 @@ void showShoppingListPicker({
       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
     ),
     builder: (context) => DraggableScrollableSheet(
-      initialChildSize: 0.6, // Altura inicial (60% de la pantalla)
-      minChildSize: 0.4,     // Altura mínima
-      maxChildSize: 0.9,     // Altura máxima al estirar
+      initialChildSize: 0.6,
+      minChildSize: 0.4,
+      maxChildSize: 0.9,
       expand: false,
       builder: (_, controller) => ShoppingListPickerModal(
         shoppingLists: lists,

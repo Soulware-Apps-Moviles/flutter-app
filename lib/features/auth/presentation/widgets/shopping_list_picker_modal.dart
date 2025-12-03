@@ -52,7 +52,6 @@ class _ShoppingListPickerModalState extends State<ShoppingListPickerModal> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Título del Modal
           Center(
             child: Container(
               width: 40,
@@ -70,7 +69,6 @@ class _ShoppingListPickerModalState extends State<ShoppingListPickerModal> {
           ),
           const SizedBox(height: 16),
           
-          // Buscador
           TextField(
             controller: _searchController,
             decoration: InputDecoration(
@@ -92,7 +90,6 @@ class _ShoppingListPickerModalState extends State<ShoppingListPickerModal> {
           ),
           const SizedBox(height: 10),
 
-          // Lista de resultados
           Expanded(
             child: _filteredLists.isEmpty
                 ? _buildEmptyState()
@@ -118,7 +115,6 @@ class _ShoppingListPickerModalState extends State<ShoppingListPickerModal> {
                           list.name,
                           style: const TextStyle(fontWeight: FontWeight.w600),
                         ),
-                        // Opcional: Mostrar cantidad de items sutilmente
                         subtitle: Text(
                           "${list.items.length} items",
                           style: TextStyle(color: Colors.grey[600], fontSize: 12),
@@ -126,7 +122,7 @@ class _ShoppingListPickerModalState extends State<ShoppingListPickerModal> {
                         trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
                         onTap: () {
                           widget.onSelect(list);
-                          Navigator.pop(context); // Cierra el modal
+                          Navigator.pop(context);
                         },
                       );
                     },

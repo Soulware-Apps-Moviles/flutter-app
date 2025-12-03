@@ -19,7 +19,6 @@ class HomePage extends StatelessWidget {
     return SafeArea(
       child: Column(
         children: [
-          // Search Bar
           SearchBarWidget(
             onSearch: (query) {
               bloc.add(SearchQuerySent(
@@ -28,16 +27,12 @@ class HomePage extends StatelessWidget {
               ));
             },
           ),
-
-          // Category Filters
           CategoryFilter(
             selected: context.watch<HomeBloc>().state.selectedCategory,
             onSelected: (category) {
               bloc.add(CategoryChanged(category: category));
             },
           ),
-
-          // Product Grid
           Expanded(
             child: BlocBuilder<HomeBloc, HomeState>(
               builder: (context, state) {

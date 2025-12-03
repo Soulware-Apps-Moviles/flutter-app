@@ -13,7 +13,6 @@ class ShoppingBagState {
     this.errorMessage,
   });
 
-  // Im not sure if this solves the 
   factory ShoppingBagState.initial() => ShoppingBagState(bag: ShoppingBag());
 
   ShoppingBagState copyWith({

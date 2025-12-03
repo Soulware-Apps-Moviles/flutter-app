@@ -209,8 +209,6 @@ class _OrderReviewViewState extends State<_OrderReviewView> {
                         ),
                       ),
                       const SizedBox(height: 8),
-                      
-                      // Selector de Recojo
                       SelectionField(
                         icon: selectedPickup != null 
                             ? _getPickupIcon(selectedPickup) 
@@ -233,8 +231,6 @@ class _OrderReviewViewState extends State<_OrderReviewView> {
                         },
                       ),
                       const SizedBox(height: 12),
-                      
-                      // Selector de Pago
                       SelectionField(
                         icon: selectedPayment != null 
                             ? _getPaymentIcon(selectedPayment) 

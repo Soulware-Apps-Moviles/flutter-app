@@ -29,7 +29,7 @@ class ShoppingListDetailState {
       list: list ?? this.list,
       customerId: customerId ?? this.customerId,
       errorMessage: errorMessage ?? this.errorMessage,
-      actionMessage: actionMessage, // No conservar el mensaje previo por defecto si no se pasa
+      actionMessage: actionMessage,
     );
   }
 }

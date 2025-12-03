@@ -36,7 +36,7 @@ class SelectionField extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
-                        color: Colors.grey.shade400, // Estilo para placeholder
+                        color: Colors.grey.shade400,
                       ),
                     )
                   : Text(
@@ -44,7 +44,7 @@ class SelectionField extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
-                        color: Colors.black87, // Estilo para valor seleccionado
+                        color: Colors.black87,
                       ),
                     ),
             ),

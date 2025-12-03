@@ -40,8 +40,6 @@ class ShopService {
   Future<Shop> fetchShopById(int id) async {
     try {
       final response = await _dio.get('$_shopsEndpoint/$id');
-
-      // Asumiendo que el endpoint retorna una lista conteniendo la tienda, basado en "TODOS LOS ENDPOINTS RETORNAN [...]"
       final List data = response.data;
       
       return Shop.fromJson(data.first);
@@ -55,8 +53,6 @@ class ShopService {
   Future<Shop> fetchShopByOwnerId(int ownerId) async {
     try {
       final response = await _dio.get('$_shopsEndpoint/by-owner/$ownerId');
-
-       // Asumiendo que el endpoint retorna una lista conteniendo la tienda, basado en "TODOS LOS ENDPOINTS RETORNAN [...]"
       final List data = response.data;
 
       return Shop.fromJson(data.first);

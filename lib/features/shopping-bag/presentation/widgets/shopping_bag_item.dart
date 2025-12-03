@@ -28,7 +28,6 @@ class ShoppingBagItemCard extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // 1. Imagen
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: Image.network(
@@ -46,12 +45,10 @@ class ShoppingBagItemCard extends StatelessWidget {
             ),
             const SizedBox(width: 16),
 
-            // 2. Datos y Controles
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Título
                   Text(
                     product.name,
                     maxLines: 2,
@@ -62,8 +59,6 @@ class ShoppingBagItemCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 4),
-
-                  // Precio Unitario
                   Text(
                     "S/ ${product.price.toStringAsFixed(2)} / ud",
                     style: TextStyle(
@@ -72,8 +67,6 @@ class ShoppingBagItemCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 12),
-
-                  // Controles e Importe
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -87,7 +80,7 @@ class ShoppingBagItemCard extends StatelessWidget {
                           children: [
                             _QuantityButton(
                               icon: Icons.remove,
-                              onTap: () => onDecrement(product), // Ejecuta callback
+                              onTap: () => onDecrement(product),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -102,13 +95,11 @@ class ShoppingBagItemCard extends StatelessWidget {
                             _QuantityButton(
                               icon: Icons.add,
                               color: const Color(0xFFDD6529),
-                              onTap: () => onIncrement(product), // Ejecuta callback
+                              onTap: () => onIncrement(product),
                             ),
                           ],
                         ),
                       ),
-
-                      // Subtotal
                       Text(
                         "S/ ${item.subtotal.toStringAsFixed(2)}",
                         style: const TextStyle(

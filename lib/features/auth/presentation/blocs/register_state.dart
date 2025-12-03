@@ -1,4 +1,4 @@
-import 'package:tcompro_customer/shared/domain/profile.dart'; // Ajusta según tu modelo
+import 'package:tcompro_customer/shared/domain/profile.dart';
 
 enum RegisterStatus { initial, loading, success, failure, invalid }
 

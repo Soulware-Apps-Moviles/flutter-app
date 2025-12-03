@@ -26,7 +26,6 @@ class ProductCard extends StatelessWidget {
           Stack(
             alignment: Alignment.topRight,
             children: [
-              // Product Image
               ClipRRect(
                 borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
                 child: Image.network(
@@ -42,7 +41,6 @@ class ProductCard extends StatelessWidget {
                   ),
                 ),
               ),
-              // Favorite Button
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: FavoriteButton(
@@ -52,8 +50,6 @@ class ProductCard extends StatelessWidget {
               ),
             ],
           ),
-
-          // Product Name
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             child: Text(
@@ -62,8 +58,6 @@ class ProductCard extends StatelessWidget {
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             ),
           ),
-
-          // Price
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Text(
@@ -71,10 +65,7 @@ class ProductCard extends StatelessWidget {
               style: const TextStyle(fontSize: 16),
               ),
           ),
-
           const Spacer(),
-
-          // Add to cart button
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: SizedBox(

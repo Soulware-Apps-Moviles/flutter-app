@@ -26,14 +26,11 @@ class ShoppingListsPage extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            // Search bar
             SearchBarWidget(
               onSearch: (query) {
                 bloc.add(SearchShoppingListsEvent(name: query));
               },
             ),
-
-            // Lists
             Expanded(
               child: BlocBuilder<ShoppingListsBloc, ShoppingListsState>(
                 builder: (context, state) {
@@ -68,7 +65,7 @@ class ShoppingListsPage extends StatelessWidget {
                               context,
                               ShoppingListDetailPage.route(
                                 initialList: list,
-                                customerId: context.read<HomeBloc>().state.customerId!, // Asumiendo que HomeBloc tiene el customerId
+                                customerId: context.read<HomeBloc>().state.customerId!,
                               ),
                             );
                           },

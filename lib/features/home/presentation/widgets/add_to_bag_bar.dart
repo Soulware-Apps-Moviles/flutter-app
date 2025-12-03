@@ -33,7 +33,7 @@ class AddToBagBar extends StatelessWidget {
             ),
           ),
           ElevatedButton(
-            onPressed: () {}, // Add logic here
+            onPressed: () {},
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFFDD6529),
               padding:
