@@ -128,11 +128,9 @@ class ProductRepositoryImpl implements ProductRepository {
 
     if (existingIndex != -1) {
       final existingItem = currentItems[existingIndex];
-      if (existingItem.quantity > 1) {
-        await _shoppingBagDao.updateQuantity(product.id, existingItem.quantity - 1);
-      } else {
-        await _shoppingBagDao.delete(product.id);
-      }
+      if (existingItem.quantity == 1) return;
+
+      await _shoppingBagDao.updateQuantity(product.id, existingItem.quantity - 1);
       _bagUpdateController.add(null);
     }
   }
