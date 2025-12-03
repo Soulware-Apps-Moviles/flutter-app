@@ -57,7 +57,7 @@ class OrderReviewPage extends StatelessWidget {
           
           if (state.status == OrderReviewStatus.success && state.createdOrder != null) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("Order created successfully!")),
+              const SnackBar(content: Text("Order created successfully!"), backgroundColor: Color(0xFFDD6529),),
             );
             // TODO: Navigate to Order Tracking
           }
@@ -91,7 +91,6 @@ class _OrderReviewViewState extends State<_OrderReviewView> {
     }).toList();
   }
 
-  // Helper genérico para mostrar el modal de selección
   void _showMethodSelectionModal<T>({
     required BuildContext context,
     required String title,

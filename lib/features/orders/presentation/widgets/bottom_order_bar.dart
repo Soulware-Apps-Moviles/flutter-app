@@ -19,7 +19,7 @@ class BottomOrderBar extends StatelessWidget {
         child: Row(
           children: [
             Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              const Text("Total a Pagar", style: TextStyle(color: Colors.grey, fontSize: 12)),
+              const Text("Total price", style: TextStyle(color: Colors.grey, fontSize: 12)),
               Text("S/ ${total.toStringAsFixed(2)}", style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
             ]),
             const SizedBox(width: 20),
@@ -27,7 +27,7 @@ class BottomOrderBar extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: onConfirm,
                 style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFDD6529), foregroundColor: Colors.white, padding: const EdgeInsets.symmetric(vertical: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
-                child: const Text("Confirmar", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                child: const Text("Place order", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               ),
             ),
           ],
