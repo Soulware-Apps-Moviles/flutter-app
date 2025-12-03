@@ -1,14 +1,14 @@
-import 'package:tcompro_customer/shared/domain/bag_item.dart';
+import 'package:tcompro_customer/shared/domain/shopping_bag_item.dart';
 import 'package:tcompro_customer/shared/domain/product.dart';
 
 class ShoppingBag {
-  final List<BagItem> _items;
+  final List<ShoppingBagItem> _items;
 
   ShoppingBag() : _items = [];
 
-  ShoppingBag.fromItems(List<BagItem> items) : _items = List.from(items);
+  ShoppingBag.fromItems(List<ShoppingBagItem> items) : _items = List.from(items);
 
-  List<BagItem> get items => List.unmodifiable(_items);
+  List<ShoppingBagItem> get items => List.unmodifiable(_items);
 
   double get totalPrice {
     return _items.fold(0, (sum, item) => sum + item.subtotal);
@@ -23,7 +23,7 @@ class ShoppingBag {
     if (index != -1) {
       _items[index].increment();
     } else {
-      _items.add(BagItem(product: product));
+      _items.add(ShoppingBagItem(product: product));
     }
   }
 

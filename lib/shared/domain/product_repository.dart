@@ -1,5 +1,5 @@
 import 'package:tcompro_customer/features/home/domain/category.dart';
-import 'package:tcompro_customer/shared/domain/bag_item.dart';
+import 'package:tcompro_customer/shared/domain/shopping_bag_item.dart';
 import 'package:tcompro_customer/shared/domain/product.dart';
 
 abstract class ProductRepository {
@@ -14,5 +14,5 @@ abstract class ProductRepository {
   Future<void> decreaseQuantity({required int customerId, required Product product});
   Future<void> removeFromShoppingBag({required int customerId, required Product product});
   Future<void> clearShoppingBag({required int customerId});
-  Future<List<BagItem>> getShoppingBagItems();
+  Future<List<ShoppingBagItem>> getShoppingBagItems();
 }

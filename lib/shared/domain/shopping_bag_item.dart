@@ -1,10 +1,10 @@
 import 'package:tcompro_customer/shared/domain/product.dart';
 
-class BagItem {
+class ShoppingBagItem {
   final Product product;
   int quantity;
 
-  BagItem({
+  ShoppingBagItem({
     required this.product,
     this.quantity = 1,
   });

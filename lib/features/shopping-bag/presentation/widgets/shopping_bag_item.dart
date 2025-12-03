@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:tcompro_customer/shared/domain/bag_item.dart';
+import 'package:tcompro_customer/shared/domain/shopping_bag_item.dart';
 import 'package:tcompro_customer/shared/domain/product.dart';
 
 class ShoppingBagItemCard extends StatelessWidget {
-  final BagItem item;
+  final ShoppingBagItem item;
   
   final void Function(Product) onIncrement;
   final void Function(Product) onDecrement;

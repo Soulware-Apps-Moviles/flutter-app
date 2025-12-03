@@ -1,8 +1,8 @@
-import 'package:tcompro_customer/shared/domain/bag_item.dart';
+import 'package:tcompro_customer/shared/domain/shopping_bag_item.dart';
 import 'package:tcompro_customer/shared/domain/product.dart';
 import 'package:tcompro_customer/features/home/domain/category.dart';
 
-extension BagItemMapper on BagItem {
+extension BagItemMapper on ShoppingBagItem {
   Map<String, dynamic> toLocalDbMap() {
     return {
       'product_id': product.id,
@@ -16,8 +16,8 @@ extension BagItemMapper on BagItem {
     };
   }
 
-  static BagItem fromLocalDbMap(Map<String, dynamic> map) {
-    return BagItem(
+  static ShoppingBagItem fromLocalDbMap(Map<String, dynamic> map) {
+    return ShoppingBagItem(
       product: Product(
         id: map['product_id'] as int,
         name: map['name'] as String,

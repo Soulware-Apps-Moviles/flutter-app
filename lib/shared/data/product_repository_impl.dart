@@ -4,7 +4,7 @@ import 'package:tcompro_customer/features/home/domain/category.dart';
 import 'package:tcompro_customer/shared/data/local/shopping_bag_dao.dart';
 import 'package:tcompro_customer/shared/data/remote/favorite_service.dart';
 import 'package:tcompro_customer/shared/data/remote/product_service.dart';
-import 'package:tcompro_customer/shared/domain/bag_item.dart';
+import 'package:tcompro_customer/shared/domain/shopping_bag_item.dart';
 import 'package:tcompro_customer/shared/domain/product_repository.dart';
 import 'package:tcompro_customer/shared/domain/product.dart';
 
@@ -81,7 +81,7 @@ class ProductRepositoryImpl implements ProductRepository {
       final existingItem = currentItems[existingIndex];
       await _shoppingBagDao.updateQuantity(product.id, existingItem.quantity + 1);
     } else {
-      final newItem = BagItem(product: product, quantity: 1);
+      final newItem = ShoppingBagItem(product: product, quantity: 1);
       await _shoppingBagDao.insertOrUpdate(newItem);
     }
 
@@ -97,7 +97,7 @@ class ProductRepositoryImpl implements ProductRepository {
       final existingItem = currentItems[existingIndex];
       await _shoppingBagDao.updateQuantity(product.id, existingItem.quantity + quantity);
     } else {
-      final newItem = BagItem(product: product, quantity: quantity);
+      final newItem = ShoppingBagItem(product: product, quantity: quantity);
       await _shoppingBagDao.insertOrUpdate(newItem);
     }
 
@@ -138,7 +138,7 @@ class ProductRepositoryImpl implements ProductRepository {
   }
 
   @override
-  Future<List<BagItem>> getShoppingBagItems() async {
+  Future<List<ShoppingBagItem>> getShoppingBagItems() async {
     return await _shoppingBagDao.fetchBagItems();
   }
 }

@@ -1,18 +1,18 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:tcompro_customer/core/database/app_database.dart';
 import 'package:tcompro_customer/shared/data/local/shopping_bag_mapper.dart';
-import 'package:tcompro_customer/shared/domain/bag_item.dart';
+import 'package:tcompro_customer/shared/domain/shopping_bag_item.dart';
 
 class ShoppingBagDao {
   
-  Future<List<BagItem>> fetchBagItems() async {
+  Future<List<ShoppingBagItem>> fetchBagItems() async {
     final Database database = await AppDatabase().database;
     final List<Map<String, dynamic>> maps = await database.query('cart_items');
 
     return maps.map((map) => BagItemMapper.fromLocalDbMap(map)).toList();
   }
 
-  Future<void> insertOrUpdate(BagItem item) async {
+  Future<void> insertOrUpdate(ShoppingBagItem item) async {
     final Database database = await AppDatabase().database;
     await database.insert(
       'cart_items',
