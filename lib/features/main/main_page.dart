@@ -6,6 +6,7 @@ import 'package:tcompro_customer/features/home/domain/category.dart';
 import 'package:tcompro_customer/features/home/presentation/bloc/home_bloc.dart';
 import 'package:tcompro_customer/features/home/presentation/bloc/home_event.dart';
 import 'package:tcompro_customer/features/shopping-bag/presentation/pages/shopping_bag_page.dart';
+import 'package:tcompro_customer/features/you/presentation/pages/you_page.dart';
 import 'package:tcompro_customer/shared/domain/profile.dart';
 import 'package:tcompro_customer/features/favorites/presentation/bloc/favorites_bloc.dart';
 import 'package:tcompro_customer/features/favorites/presentation/bloc/favorites_event.dart';
@@ -27,7 +28,7 @@ class _MainPageState extends State<MainPage> {
   final List<Widget> _pages = [
     const HomePage(),
     const ShoppingListsPage(),
-    const Center(child: Text('Profile page placeholder')),
+    const YouPage(),
   ];
 
   // I didnt come up with anything better to allow this "Hey Im a special tab" behaviour
