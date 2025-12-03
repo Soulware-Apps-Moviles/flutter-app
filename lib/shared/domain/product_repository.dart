@@ -7,8 +7,8 @@ abstract class ProductRepository {
   Stream<void> get bagUpdates;
 
   Future<List<Product>> fetchProducts({required int customerId, CategoryType? category, String? name});
+  Future<List<Product>> fetchFavorites({required int customerId, CategoryType? category, String? name});
   void toggleFavorite({required int customerId, required Product product});
-
   Future<void> addOneToShoppingBag({required int customerId, required Product product});
   Future<void> addManyToShoppingBag({required int customerId, required Product product, required int quantity});
   Future<void> decreaseQuantity({required int customerId, required Product product});

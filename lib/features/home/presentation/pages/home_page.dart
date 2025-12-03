@@ -6,7 +6,7 @@ import 'package:tcompro_customer/features/home/presentation/bloc/home_event.dart
 import 'package:tcompro_customer/features/home/presentation/bloc/home_state.dart';
 import 'package:tcompro_customer/features/home/presentation/pages/product_detail_page.dart';
 import 'package:tcompro_customer/features/home/presentation/widgets/category_filter.dart';
-import 'package:tcompro_customer/features/home/presentation/widgets/product_card.dart';
+import 'package:tcompro_customer/shared/presentation/widgets/product_card.dart';
 import 'package:tcompro_customer/features/home/presentation/widgets/search_bar.dart';
 
 class HomePage extends StatelessWidget {

@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:tcompro_customer/core/constants/api_constants.dart';
-import 'package:tcompro_customer/features/favorites/domain/favorite.dart';
+import 'package:tcompro_customer/shared/domain/favorite.dart';
 
 class FavoriteService {
   final Dio _dio;

@@ -8,8 +8,6 @@ import 'package:tcompro_customer/features/home/presentation/bloc/home_event.dart
 import 'package:tcompro_customer/features/shopping-bag/presentation/pages/shopping_bag_page.dart';
 import 'package:tcompro_customer/features/you/presentation/pages/you_page.dart';
 import 'package:tcompro_customer/shared/domain/profile.dart';
-import 'package:tcompro_customer/features/favorites/presentation/bloc/favorites_bloc.dart';
-import 'package:tcompro_customer/features/favorites/presentation/bloc/favorites_event.dart';
 import 'package:tcompro_customer/features/home/presentation/pages/home_page.dart';
 import 'package:tcompro_customer/features/shopping-lists/presentation/bloc/shopping_lists_bloc.dart';
 import 'package:tcompro_customer/features/shopping-lists/presentation/bloc/shopping_lists_event.dart';
@@ -56,9 +54,6 @@ class _MainPageState extends State<MainPage> {
           );
           context.read<ShoppingListsBloc>().add(
             LoadShoppingListsEvent(customerId: userProfile.id)
-          );
-          context.read<FavoritesBloc>().add(
-            LoadFavoritesEvent(customerId: userProfile.id)
           );
           context.read<ShoppingBagCubit>().updateCustomerId(userProfile.id);
         }

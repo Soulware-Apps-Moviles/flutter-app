@@ -26,7 +26,6 @@ import 'package:tcompro_customer/features/orders/domain/order_repository.dart';
 import 'package:tcompro_customer/features/shopping-bag/presentation/bloc/shopping_bag_bloc.dart';
 import 'package:tcompro_customer/shared/data/local/shopping_bag_dao.dart';
 import 'package:tcompro_customer/shared/data/remote/favorite_service.dart';
-import 'package:tcompro_customer/features/favorites/presentation/bloc/favorites_bloc.dart';
 import 'package:tcompro_customer/shared/data/product_repository_impl.dart';
 import 'package:tcompro_customer/shared/data/remote/product_service.dart';
 import 'package:tcompro_customer/features/home/presentation/bloc/home_bloc.dart';
@@ -139,9 +138,6 @@ class MainApp extends StatelessWidget {
             create: (context) => HomeBloc(
               repository: context.read<ProductRepository>(),
             ),
-          ),
-          BlocProvider(
-            create: (context) => FavoritesBloc(service: favoriteService),
           ),
           BlocProvider(
             create: (context) => ShoppingListsBloc(

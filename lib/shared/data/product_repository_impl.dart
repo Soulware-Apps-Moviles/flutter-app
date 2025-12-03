@@ -49,6 +49,23 @@ class ProductRepositoryImpl implements ProductRepository {
   }
 
   @override
+  Future<List<Product>> fetchFavorites(
+      {required int customerId, CategoryType? category, String? name}) async {
+    List<Product> allProducts = await _productService.fetchProducts(
+        category: category?.stringName, name: name);
+    
+    List<int> favoriteIds = await _favoriteService.getFavoritesIds(customerId);
+    final favoriteSet = favoriteIds.toSet();
+
+    final favoriteProducts = allProducts
+        .where((product) => favoriteSet.contains(product.id))
+        .map((product) => product.copyWith(isFavorite: true))
+        .toList();
+
+    return favoriteProducts;
+  }
+
+  @override
   Future<void> toggleFavorite(
       {required int customerId, required Product product}) async {
     final updatedProduct = product.copyWith(isFavorite: !product.isFavorite);
