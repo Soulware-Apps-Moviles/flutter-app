@@ -273,7 +273,7 @@ class _OrderReviewViewState extends State<_OrderReviewView> {
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         itemCount: orderLines.length,
-                        separatorBuilder: (_, __) => const SizedBox(height: 12),
+                        separatorBuilder: (_, _) => const SizedBox(height: 12),
                         itemBuilder: (context, index) {
                           return OrderLineItem(line: orderLines[index]);
                         },

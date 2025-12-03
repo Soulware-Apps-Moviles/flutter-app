@@ -26,7 +26,7 @@ class OrderLineItem extends StatelessWidget {
               image: DecorationImage(
                 image: NetworkImage(line.imageUrl),
                 fit: BoxFit.cover,
-                onError: (_, __) {},
+                onError: (_, _) {},
               ),
             ),
           ),

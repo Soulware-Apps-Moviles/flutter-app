@@ -17,13 +17,13 @@ class PickShopState {
 
   PickShopState copyWith({
     PickShopStatus? status,
-    List<Shop>? stores,
+    List<Shop>? shops,
     Shop? selectedStore,
     String? errorMessage,
   }) {
     return PickShopState(
       status: status ?? this.status,
-      shops: stores ?? this.shops,
+      shops: shops ?? this.shops,
       selectedStore: selectedStore ?? this.selectedStore,
       errorMessage: errorMessage ?? this.errorMessage,
     );

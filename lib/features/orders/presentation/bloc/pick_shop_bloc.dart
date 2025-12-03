@@ -26,7 +26,7 @@ class PickShopBloc extends Bloc<PickShopEvent, PickShopState> {
 
       emit(state.copyWith(
         status: PickShopStatus.loaded,
-        stores: shops,
+        shops: shops,
       ));
     } catch (e) {
       emit(state.copyWith(

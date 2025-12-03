@@ -14,13 +14,16 @@ class SignOutButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      child: OutlinedButton(
+      child: ElevatedButton(
         onPressed: isLoading ? null : onTap,
-        style: OutlinedButton.styleFrom(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.grey.shade600,
+          surfaceTintColor: Colors.white,
+          elevation: 3,
           padding: const EdgeInsets.symmetric(vertical: 16),
-          side: BorderSide(color: Colors.grey.shade400, width: 2),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(20),
           ),
         ),
         child: isLoading
@@ -34,7 +37,7 @@ class SignOutButton extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: Colors.grey.shade600,
+                  color: Colors.black,
                 ),
               ),
       ),
