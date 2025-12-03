@@ -137,7 +137,7 @@ class ShoppingListCard extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8),
                       child: Image.network(
-                        item.imageUrl,
+                        item.product.imageUrl,
                         fit: BoxFit.cover,
                         errorBuilder: (_, _, _) => Container(
                           color: Colors.grey.shade100,

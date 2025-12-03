@@ -67,7 +67,7 @@ class ShoppingListDetailBloc extends Bloc<ShoppingListDetailEvent, ShoppingListD
     try {
       await shoppingListRepository.addItemOrUpdateQuantity(
         list: currentList,
-        product: event.item.toProduct,
+        product: event.item.product,
         newQuantity: event.newQuantity,
       );
     } catch (e) {
@@ -85,12 +85,12 @@ class ShoppingListDetailBloc extends Bloc<ShoppingListDetailEvent, ShoppingListD
     try {
       await productRepository.addManyToShoppingBag(
         customerId: customerId,
-        product: event.item.toProduct,
+        product: event.item.product,
         quantity: event.item.quantity,
       );
       
       emit(state.copyWith(
-        actionMessage: "Added ${event.item.quantity} x ${event.item.name} to Main Bag",
+        actionMessage: "Added ${event.item.quantity} x ${event.item.product.name} to Main Bag",
       ));
     } catch (e) {
       emit(state.copyWith(errorMessage: "Failed to add to bag: ${e.toString()}"));
@@ -109,7 +109,7 @@ class ShoppingListDetailBloc extends Bloc<ShoppingListDetailEvent, ShoppingListD
       await Future.wait(currentList.items.map((item) {
         return productRepository.addManyToShoppingBag(
           customerId: customerId,
-          product: item.toProduct,
+          product: item.product,
           quantity: item.quantity,
         );
       }));

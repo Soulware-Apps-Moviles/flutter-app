@@ -37,7 +37,7 @@ class ShoppingListItemCard extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
                     child: Image.network(
-                      item.imageUrl,
+                      item.product.imageUrl,
                       fit: BoxFit.contain,
                       errorBuilder: (_, _, _) => Image.network(
                         "https://www.costaoil.com.co/wp-content/uploads/2025/01/sinimagen.jpg",
@@ -58,7 +58,7 @@ class ShoppingListItemCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             child: Text(
-              item.name,
+              item.product.name,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
@@ -69,7 +69,7 @@ class ShoppingListItemCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Text(
-              'S/ ${item.price.toStringAsFixed(2)}',
+              'S/ ${item.product.price.toStringAsFixed(2)}',
               style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 13),
             ),
           ),

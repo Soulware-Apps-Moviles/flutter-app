@@ -115,7 +115,7 @@ class ShoppingListsBloc extends Bloc<ShoppingListsEvent, ShoppingListsState> {
       await Future.wait(event.list.items.map((item) {
         return productRepository.addManyToShoppingBag(
           customerId: customerId,
-          product: item.toProduct,
+          product: item.product,
           quantity: item.quantity,
         );
       }));

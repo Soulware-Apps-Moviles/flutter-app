@@ -33,19 +33,12 @@ class ShoppingListRepositoryImpl implements ShoppingListRepository {
     required Product product,
     required int newQuantity,
   }) async {
-    await _service.addItemOrUpdateQuantity(
+    final updatedList = await _service.addItemOrUpdateQuantity(
       list: list,
       product: product,
       newQuantity: newQuantity,
     );
 
-    final refreshedLists = await _service.fetchShoppingLists(customerId: list.customerId);
-    
-    try {
-      final updatedList = refreshedLists.firstWhere((l) => l.id == list.id);
-      _listUpdateController.add(updatedList);
-    } catch (_) {
-      // Ignored if list is not found after update
-    }
+    _listUpdateController.add(updatedList);
   }
 }

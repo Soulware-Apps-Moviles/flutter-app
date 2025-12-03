@@ -49,7 +49,7 @@ class ShoppingListService {
     }
   }
 
-  Future<void> _executeTogglePatch({
+  Future<ShoppingList> _executeTogglePatch({
     required int listId,
     required int productId,
     required int quantity,
@@ -69,48 +69,55 @@ class ShoppingListService {
     }
     
     try {
-      await _dio.patch(
+      final response = await _dio.patch(
         '${ApiConstants.shoppingListsEndpoint}/$listId', 
         data: data,
       );
+      
+      return ShoppingList.fromJson(response.data);
     } catch (e, st) {
       debugPrint('Error _executeTogglePatch: $e\n$st');
       throw Exception('Failed to execute toggle patch on list: $e');
     }
   }
 
-  Future<void> addItemOrUpdateQuantity({
+  Future<ShoppingList> addItemOrUpdateQuantity({
     required ShoppingList list,
     required Product product,
     required int newQuantity,
   }) async {
-    final bool isProductInList = list.items.any((item) => item.catalogProductId == product.id);
+    final bool isProductInList = list.items.any((item) => item.product.id == product.id);
     final int listId = list.id;
     final int productId = product.id;
 
     if (newQuantity <= 0) {
       if (isProductInList) {
-        await _executeTogglePatch(
+        // Toggle OFF (Remove)
+        return await _executeTogglePatch(
           listId: listId, 
           productId: productId, 
           quantity: 1,
         );
       }
+      return list; // No changes needed
     } else if (isProductInList) {
+      // Toggle OFF (Remove existing)
       await _executeTogglePatch(
         listId: listId, 
         productId: productId, 
         quantity: 1, 
       );
       
-      await _executeTogglePatch(
+      // Toggle ON (Add back with new quantity)
+      return await _executeTogglePatch(
         listId: listId, 
         productId: productId, 
         quantity: newQuantity,
       );
 
     } else {
-      await _executeTogglePatch(
+      // Toggle ON (Add new)
+      return await _executeTogglePatch(
         listId: listId, 
         productId: productId, 
         quantity: newQuantity,
