@@ -9,7 +9,8 @@ abstract class ProductRepository {
   Future<List<Product>> fetchProducts({required int customerId, CategoryType? category, String? name});
   void toggleFavorite({required int customerId, required Product product});
 
-  Future<void> addToShoppingBag({required int customerId, required Product product});
+  Future<void> addOneToShoppingBag({required int customerId, required Product product});
+  Future<void> addManyToShoppingBag({required int customerId, required Product product, required int quantity});
   Future<void> decreaseQuantity({required int customerId, required Product product});
   Future<void> removeFromShoppingBag({required int customerId, required Product product});
   Future<void> clearShoppingBag({required int customerId});

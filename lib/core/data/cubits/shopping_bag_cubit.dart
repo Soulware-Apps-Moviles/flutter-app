@@ -37,7 +37,7 @@ class ShoppingBagCubit extends Cubit<ShoppingBag> {
 
   Future<void> addProduct(Product product) async {
     try {
-      await _productRepository.addToShoppingBag(
+      await _productRepository.addOneToShoppingBag(
           customerId: _currentCustomerId ?? 0, product: product);
       await _loadBagFromDb();
     } catch (e) {

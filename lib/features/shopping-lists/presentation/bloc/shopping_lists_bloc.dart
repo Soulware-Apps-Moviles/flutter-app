@@ -115,7 +115,7 @@ class ShoppingListsBloc extends Bloc<ShoppingListsEvent, ShoppingListsState> {
       emit(state.copyWith(loading: true));
 
       await Future.wait(event.list.items.map((item) {
-        return productRepository.addToShoppingBag(
+        return productRepository.addOneToShoppingBag(
           customerId: customerId,
           product: item.toProduct,
         );

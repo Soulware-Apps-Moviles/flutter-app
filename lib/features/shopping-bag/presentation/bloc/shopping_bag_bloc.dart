@@ -88,7 +88,7 @@ class ShoppingBagBloc extends Bloc<ShoppingBagEvent, ShoppingBagState> {
     tempBag.increment(event.product);
 
     try {
-      await _productRepository.addToShoppingBag(
+      await _productRepository.addOneToShoppingBag(
         customerId: _currentCustomerId ?? 0,
         product: event.product,
       );

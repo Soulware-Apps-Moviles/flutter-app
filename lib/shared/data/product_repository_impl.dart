@@ -73,7 +73,7 @@ class ProductRepositoryImpl implements ProductRepository {
   }
   
   @override
-  Future<void> addToShoppingBag({required int customerId, required Product product}) async {  
+  Future<void> addOneToShoppingBag({required int customerId, required Product product}) async {  
     final currentItems = await _shoppingBagDao.fetchBagItems();
     final existingIndex = currentItems.indexWhere((item) => item.product.id == product.id);
 
@@ -82,6 +82,22 @@ class ProductRepositoryImpl implements ProductRepository {
       await _shoppingBagDao.updateQuantity(product.id, existingItem.quantity + 1);
     } else {
       final newItem = BagItem(product: product, quantity: 1);
+      await _shoppingBagDao.insertOrUpdate(newItem);
+    }
+
+    _bagUpdateController.add(null); 
+  }
+
+  @override
+  Future<void> addManyToShoppingBag({required int customerId, required Product product, required int quantity}) async {  
+    final currentItems = await _shoppingBagDao.fetchBagItems();
+    final existingIndex = currentItems.indexWhere((item) => item.product.id == product.id);
+
+    if (existingIndex != -1) {
+      final existingItem = currentItems[existingIndex];
+      await _shoppingBagDao.updateQuantity(product.id, existingItem.quantity + quantity);
+    } else {
+      final newItem = BagItem(product: product, quantity: quantity);
       await _shoppingBagDao.insertOrUpdate(newItem);
     }
 

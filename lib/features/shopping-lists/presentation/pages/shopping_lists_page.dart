@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tcompro_customer/features/home/presentation/bloc/home_bloc.dart';
 import 'package:tcompro_customer/features/home/presentation/widgets/search_bar.dart';
 import 'package:tcompro_customer/features/shopping-lists/presentation/bloc/shopping_lists_bloc.dart';
 import 'package:tcompro_customer/features/shopping-lists/presentation/bloc/shopping_lists_event.dart';
@@ -65,9 +66,9 @@ class ShoppingListsPage extends StatelessWidget {
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(
-                                builder: (_) =>
-                                    ShoppingListDetailPage(list: list),
+                              ShoppingListDetailPage.route(
+                                initialList: list,
+                                customerId: context.read<HomeBloc>().state.customerId!, // Asumiendo que HomeBloc tiene el customerId
                               ),
                             );
                           },
