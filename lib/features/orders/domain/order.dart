@@ -1,4 +1,4 @@
-import 'package:tcompro_customer/features/orders/domain/orderline.dart';
+import 'package:tcompro_customer/features/orders/domain/order_line.dart';
 
 class Order {
   final int id;

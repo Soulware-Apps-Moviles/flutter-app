@@ -1,4 +1,6 @@
 import 'package:geolocator/geolocator.dart';
+import 'package:tcompro_customer/features/orders/domain/payment_method.dart';
+import 'package:tcompro_customer/features/orders/domain/pickup_method.dart';
 
 class Shop {
   final int id;
@@ -9,7 +11,7 @@ class Shop {
   final double latitude;
   final double longitude;
   final String name;
-  final double? distanceInMeters; // Nuevo campo
+  final double? distanceInMeters;
 
   Shop({
     required this.id,
@@ -74,60 +76,5 @@ class Shop {
       longitude: longitude ?? this.longitude,
       name: name ?? this.name,
     );
-  }
-}
-
-enum PaymentMethod {
-  cash,
-  onCredit,
-  virtual;
-
-  static PaymentMethod fromString(String value) {
-    switch (value) {
-      case 'CASH':
-        return PaymentMethod.cash;
-      case 'ON_CREDIT':
-        return PaymentMethod.onCredit;
-      case 'VIRTUAL':
-        return PaymentMethod.virtual;
-      default:
-        throw Exception('Unknown payment method: $value');
-    }
-  }
-
-  String get displayName {
-    switch (this) {
-      case PaymentMethod.cash:
-        return 'Cash';
-      case PaymentMethod.onCredit:
-        return 'Credit';
-      case PaymentMethod.virtual:
-        return 'Virtual';
-    }
-  }
-}
-
-enum PickupMethod {
-  delivery,
-  shopPickUp;
-
-  static PickupMethod fromString(String value) {
-    switch (value) {
-      case 'DELIVERY':
-        return PickupMethod.delivery;
-      case 'SHOP_PICK_UP':
-        return PickupMethod.shopPickUp;
-      default:
-        throw Exception('Unknown pickup method: $value');
-    }
-  }
-
-  String get displayName {
-    switch (this) {
-      case PickupMethod.delivery:
-        return 'Delivery';
-      case PickupMethod.shopPickUp:
-        return 'Shop Pickup';
-    }
   }
 }

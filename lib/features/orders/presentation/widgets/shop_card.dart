@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tcompro_customer/features/orders/domain/payment_method.dart';
+import 'package:tcompro_customer/features/orders/domain/pickup_method.dart';
 import 'package:tcompro_customer/features/orders/domain/shop.dart';
 
 class ShopCard extends StatelessWidget {
