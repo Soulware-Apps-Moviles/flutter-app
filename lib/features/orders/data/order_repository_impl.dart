@@ -53,12 +53,11 @@ class OrderRepositoryImpl implements OrderRepository {
       return {
         'productCatalogId': item.product.id,
         'quantity': item.quantity,
-        'unitPrice': item.product.price,
       };
     }).toList();
 
-    final paymentMethodStr = paymentMethod.name;
-    final pickupMethodStr = pickupMethod.name;
+    final paymentMethodStr = paymentMethod.toBackendEnumString;
+    final pickupMethodStr = pickupMethod.toBackendEnumString;
 
     return await _orderService.createOrder(
       customerId: customerId,

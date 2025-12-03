@@ -21,4 +21,13 @@ enum PickupMethod {
         return 'Shop Pickup';
     }
   }
+
+  String get toBackendEnumString {
+    switch (this) {
+      case PickupMethod.delivery:
+        return 'DELIVERY';
+      case PickupMethod.shopPickUp:
+        return 'SHOP_PICK_UP';
+    }
+  }
 }

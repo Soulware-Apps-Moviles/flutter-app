@@ -26,4 +26,15 @@ enum PaymentMethod {
         return 'Virtual';
     }
   }
+
+  String get toBackendEnumString {
+    switch (this) {
+      case PaymentMethod.cash:
+        return 'CASH';
+      case PaymentMethod.onCredit:
+        return 'ON_CREDIT';
+      case PaymentMethod.virtual:
+        return 'VIRTUAL';
+    }
+  }
 }
