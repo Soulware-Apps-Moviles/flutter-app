@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tcompro_customer/features/auth/domain/auth_repository.dart';
+import 'package:tcompro_customer/features/home/presentation/bloc/home_bloc.dart';
 import 'package:tcompro_customer/features/you/presentation/bloc/you_bloc.dart';
 import 'package:tcompro_customer/features/you/presentation/bloc/you_state.dart';
 import 'package:tcompro_customer/features/you/presentation/bloc/your_event.dart';
+import 'package:tcompro_customer/features/you/presentation/pages/favorites_page.dart';
 import 'package:tcompro_customer/features/you/presentation/widgets/dashboard_button.dart';
 import 'package:tcompro_customer/features/you/presentation/widgets/profile_header.dart';
 import 'package:tcompro_customer/features/you/presentation/widgets/sign_out_button.dart';
@@ -54,10 +56,12 @@ class _ProfileView extends StatelessWidget {
                           label: "Favorites",
                           icon: Icons.favorite_border_rounded,
                           onTap: () {
-                          //   Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(builder: (_) => const FavoritesPage()),
-                          //   );
+                            Navigator.push(
+                              context,
+                              FavoritesPage.route(
+                                customerId: context.read<HomeBloc>().state.customerId!
+                              )
+                            );
                           },
                         ),
                       ),
